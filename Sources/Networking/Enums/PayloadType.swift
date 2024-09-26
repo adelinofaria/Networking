@@ -8,9 +8,23 @@
 
 import Foundation
 
-public enum PayloadType {
-    case queryString([String: String])
-    case headers([String: String])
+/// Struct to store queryString's keys and values.
+/// We store this in a struct as opposed to dictionaries to maintain order and uniqueness of it's keys and values
+public struct QueryItem: Equatable {
+    let name: String
+    let value: String
+}
+
+/// Struct to store HTTP headers key and values.
+public struct HTTPHeader: Equatable {
+    let name: String
+    let value: String
+}
+
+public enum PayloadType: Equatable {
+
+    case queryString([QueryItem])
+    case headers([HTTPHeader])
     case body(Data)
 //    case body(NetworkingEncodable)
 }

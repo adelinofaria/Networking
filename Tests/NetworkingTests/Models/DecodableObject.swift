@@ -3,6 +3,7 @@
 //  Networking
 //
 //  Created by Adelino Faria on 26/09/2024.
+//  Copyright © 2024 Adelino Faria. All rights reserved.
 //
 
 import Foundation
@@ -16,22 +17,10 @@ struct DecodableObject: JSONNetworkDecodable {
 
     static func sampleObjectData() -> Data {
 
-        let jsonData = try? [
+        [
             "a": true,
             "b": 1,
             "c": "123",
         ].jsonData()
-
-        return jsonData ?? Data()
-    }
-}
-
-extension Dictionary {
-
-    func jsonData() throws -> Data {
-
-        let data = try JSONSerialization.data(withJSONObject: self)
-
-        return data
     }
 }

@@ -10,13 +10,28 @@ import Foundation
 
 extension Array where Element == URLQueryItem {
 
-    mutating func append(_ queryItems: [URLQueryItem], policy: Config.MergePolicy) {
+    mutating func append(_ queryString: [QueryItem], policy: Config.MergePolicy) {
+
+        let queryItems = queryString.map {
+            URLQueryItem(name: $0.name, value: $0.value)
+        }
 
         switch policy {
         case .append:
+
             self.append(contentsOf: queryItems)
         case .overwrite:
-            self = queryItems
+
+            queryItems.forEach { item in
+                if let foundIndex = self.firstIndex(where: { $0.name == item.name }) {
+
+                    self[foundIndex].value = item.value
+
+                } else {
+
+                    self.append(item)
+                }
+            }
         }
     }
 }

@@ -10,23 +10,77 @@ import Foundation
 import Testing
 @testable import Networking
 
-struct HTTPRequestTests {
+extension URL {
+    static var sample = URL(string: "https://host.domain/path?q=abc")!
+}
+
+@Suite struct HTTPRequestTests {
 
     // MARK: Setup
 
-    let url = URL(string: "https://domain.toplevel/path?query=item")
+    static let allMethods: [HTTPRequest] = [
+        .get(url: .sample),
+        .head(url: .sample),
+        .post(url: .sample),
+        .put(url: .sample),
+        .delete(url: .sample),
+        .patch(url: .sample)
+    ]
+
+    static let allMethodStrings = [
+        "GET",
+        "HEAD",
+        "POST",
+        "PUT",
+        "DELETE",
+        "PATCH"
+    ]
+
+    static let allPayloads: [Payload] = [
+        [],
+        [.queryString([.init(name: "a", value: "1")])],
+        [.headers([.init(name: "b", value: "2")])],
+        [.body(["c": "3"].jsonData())],
+        [.queryString([.init(name: "a", value: "1")]), .headers([.init(name: "b", value: "2")]), .body(["c": "3"].jsonData())],
+    ]
+
+    static let allPayloadsExpectations = [
+        (URL.sample, [:], nil),
+        (URL(string: "https://host.domain/path?q=abc&a=1")!, [:], nil),
+        (URL.sample, ["b": "2"], nil),
+        (URL.sample, [:], ["c": "3"].jsonData()),
+        (URL(string: "https://host.domain/path?q=abc&a=1")!, ["b": "2"], ["c": "3"].jsonData()),
+    ]
 
     // MARK: Tests
 
-    @Test func urlRequestGetNoArgs() async throws {
+    @Test("All http methods with no payload", arguments: zip(Self.allMethods, Self.allMethodStrings))
+    func urlRequestNoPayload(httpRequest: HTTPRequest, method: String) async throws {
 
-        let url = try #require(self.url)
-        let request: HTTPRequest = .get(url: url)
+        #expect(httpRequest.rawValue == method)
+        #expect(httpRequest.url == .sample)
+        #expect(httpRequest.payload == nil)
 
-        let urlRequest = try request.urlRequest(with: .init())
+        let urlRequest = try httpRequest.urlRequest(with: .init())
 
-        #expect(request.url == url)
-        #expect(request.payload == nil)
-        #expect(urlRequest.url == url)
+        #expect(urlRequest.httpMethod == method)
+        #expect(urlRequest.url == .sample)
+        #expect(urlRequest.allHTTPHeaderFields == [:])
+        #expect(urlRequest.httpBody == nil)
+    }
+
+    @Test("All payloads with a get", arguments: zip(Self.allPayloads, Self.allPayloadsExpectations))
+    func urlRequestNoPayload(payload: Payload, expectation: (URL, [String : String], Data?)) async throws {
+
+        let httpRequest = HTTPRequest.get(url: .sample, payload: payload)
+
+        #expect(httpRequest.url == .sample)
+        #expect(httpRequest.payload == payload)
+
+        let urlRequest = try httpRequest.urlRequest(with: .init())
+
+        #expect(urlRequest.url == expectation.0)
+        #expect(urlRequest.allHTTPHeaderFields == expectation.1)
+        #expect(urlRequest.httpBody == expectation.2)
     }
 }

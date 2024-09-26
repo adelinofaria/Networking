@@ -17,15 +17,15 @@ enum NetworkingURLRequestError: Error {
 
 extension URLRequest {
 
-    mutating func setQueryString(with queryString: [String: String], mergePolicy: Config.MergePolicy) throws(NetworkingURLRequestError) {
+    mutating func setQueryString(with queryString: [QueryItem], mergePolicy: Config.MergePolicy) throws(NetworkingURLRequestError) {
 
         try self.url?.setQueryString(with: queryString, mergePolicy: mergePolicy)
     }
 
-    mutating func setHeaders(headers: [String: String]) {
+    mutating func setHeaders(headers: [HTTPHeader]) {
 
         headers.forEach {
-            self.setValue($0.value, forHTTPHeaderField: $0.key)
+            self.setValue($0.value, forHTTPHeaderField: $0.name)
         }
     }
 
