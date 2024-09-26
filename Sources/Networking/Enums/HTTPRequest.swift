@@ -73,25 +73,27 @@ extension HTTPRequest {
         }
     }
 
-    func urlRequest(with config: Config) throws -> URLRequest {
+    func urlRequest(with config: Config) async throws -> URLRequest {
 
         let url = self.url
-        let payload = self.payload
+        let payloadTypes = self.payload
 
         var urlRequest = URLRequest(url: url)
 
         urlRequest.httpMethod = self.rawValue
 
-        try payload?.forEach {
-            switch $0 {
-            case .queryString(let queryString):
-                try urlRequest.setQueryString(with: queryString, mergePolicy: config.queryItemMergePolicy)
-            case .headers(let headers):
-                // add user-agent here
-                // maybe have shared headers in config and merge them here
-                urlRequest.setHeaders(headers: headers)
-            case .body(let data):
-                urlRequest.setBody(data: data)
+        if let payloadTypes {
+            for payloadType in payloadTypes {
+                switch payloadType {
+                case .queryString(let queryString):
+                    try urlRequest.setQueryString(with: queryString, mergePolicy: config.queryItemMergePolicy)
+                case .headers(let headers):
+                    // add user-agent here
+                    // maybe have shared headers in config and merge them here
+                    urlRequest.setHeaders(headers: headers)
+                case .body(let object):
+                    try await urlRequest.setBody(object: object)
+                }
             }
         }
 

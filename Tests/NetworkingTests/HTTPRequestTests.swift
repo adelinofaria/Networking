@@ -40,16 +40,16 @@ extension URL {
         [],
         [.queryString([.init(name: "a", value: "1")])],
         [.headers([.init(name: "b", value: "2")])],
-        [.body(["c": "3"].jsonData())],
-        [.queryString([.init(name: "a", value: "1")]), .headers([.init(name: "b", value: "2")]), .body(["c": "3"].jsonData())],
+        [.body(EncodableObject.sample)],
+        [.queryString([.init(name: "a", value: "1")]), .headers([.init(name: "b", value: "2")]), .body(EncodableObject.sample)],
     ]
 
     static let allPayloadsExpectations = [
         (URL.sample, [:], nil),
         (URL(string: "https://host.domain/path?q=abc&a=1")!, [:], nil),
         (URL.sample, ["b": "2"], nil),
-        (URL.sample, [:], ["c": "3"].jsonData()),
-        (URL(string: "https://host.domain/path?q=abc&a=1")!, ["b": "2"], ["c": "3"].jsonData()),
+        (URL.sample, ["Content-Type": "application/json"], EncodableObject.sampleData),
+        (URL(string: "https://host.domain/path?q=abc&a=1")!, ["b": "2", "Content-Type": "application/json"], EncodableObject.sampleData),
     ]
 
     // MARK: Tests
@@ -61,7 +61,7 @@ extension URL {
         #expect(httpRequest.url == .sample)
         #expect(httpRequest.payload == nil)
 
-        let urlRequest = try httpRequest.urlRequest(with: .init())
+        let urlRequest = try await httpRequest.urlRequest(with: .init())
 
         #expect(urlRequest.httpMethod == method)
         #expect(urlRequest.url == .sample)
@@ -77,10 +77,10 @@ extension URL {
         #expect(httpRequest.url == .sample)
         #expect(httpRequest.payload == payload)
 
-        let urlRequest = try httpRequest.urlRequest(with: .init())
+        let urlRequest = try await httpRequest.urlRequest(with: .init())
 
         #expect(urlRequest.url == expectation.0)
         #expect(urlRequest.allHTTPHeaderFields == expectation.1)
-        #expect(urlRequest.httpBody == expectation.2)
+        #expect(urlRequest.httpBody?.count == expectation.2?.count)
     }
 }

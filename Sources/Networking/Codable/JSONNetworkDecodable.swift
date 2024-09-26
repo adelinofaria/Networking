@@ -1,5 +1,5 @@
 //
-//  JSONDecodable.swift
+//  JSONNetworkDecodable.swift
 //  Networking
 //
 //  Created by Adelino Faria on 12/09/2024.

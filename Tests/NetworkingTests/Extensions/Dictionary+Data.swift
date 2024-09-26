@@ -10,10 +10,10 @@ import Foundation
 
 extension Dictionary {
 
-    func jsonData() -> Data {
+    func jsonData() -> Data? {
 
         let data = try? JSONSerialization.data(withJSONObject: self)
 
-        return data ?? Data()
+        return data
     }
 }

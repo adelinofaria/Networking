@@ -57,7 +57,7 @@ import Testing
 
         let url = try #require(URL(string: "https://domain.toplevel/path3?query=item"))
 
-        await Self.urlSessionMock.registerMock(url: url, data: DecodableObject.sampleObjectData())
+        await Self.urlSessionMock.registerMock(url: url, data: DecodableObject.sampleData)
 
         let result: DecodableObject = try await self.networking.request(.get(url: url))
 
@@ -79,7 +79,7 @@ import Testing
 
         let url = try #require(URL(string: "https://domain.toplevel/path5?query=item"))
 
-        await Self.urlSessionMock.registerMock(url: url, data: DecodableObject.sampleObjectData())
+        await Self.urlSessionMock.registerMock(url: url, data: DecodableObject.sampleData)
 
         let result: Result<DecodableObject, NoError> = try await self.networking.request(.get(url: url))
 

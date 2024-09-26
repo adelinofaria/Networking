@@ -29,11 +29,11 @@ extension URLRequest {
         }
     }
 
-    mutating func setBody(data: Data, contentType: String? = nil) {
+    mutating func setBody(object: any NetworkEncodable) async throws {
 
-        self.httpBody = data
+        self.httpBody = try await object.encode()
 
-        if let contentType {
+        if let contentType = object.contentType {
 
             self.setValue(contentType, forHTTPHeaderField: HTTPConstants.contentTypeHeaderKey)
         }

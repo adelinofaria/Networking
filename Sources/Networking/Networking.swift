@@ -25,7 +25,7 @@ public final actor Networking {
 
     public func request(_ request: HTTPRequest) async throws -> (Data, URLResponse) {
 
-        let urlRequest = try request.urlRequest(with: self.config)
+        let urlRequest = try await request.urlRequest(with: self.config)
         let authedURLRequest = try await self.authenticationLogic(urlRequest: urlRequest)
         let (data, urlResponse) = try await self.requestLogic(urlRequest: authedURLRequest)
 
