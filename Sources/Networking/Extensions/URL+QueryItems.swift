@@ -10,13 +10,13 @@ import Foundation
 
 extension URL {
 
-    mutating func setQueryString(with queryString: [QueryItem], mergePolicy: Config.MergePolicy) throws(NetworkingURLRequestError) {
+    mutating func setQuery(with query: [QueryItem], mergePolicy: Config.MergePolicy) throws(NetworkingURLRequestError) {
 
         guard var urlComponents = URLComponents(url: self, resolvingAgainstBaseURL: false) else {
             throw .failedToCreateURLComponents
         }
 
-        urlComponents.queryItems?.append(queryString, policy: mergePolicy)
+        urlComponents.queryItems?.append(query, policy: mergePolicy)
 
         if let url = urlComponents.url {
             self = url

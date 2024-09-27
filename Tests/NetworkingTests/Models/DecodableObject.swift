@@ -20,7 +20,7 @@ struct DecodableObject: JSONNetworkDecodable {
         [
             "a": true,
             "b": 1,
-            "c": "123",
+            "c": "abc",
         ].jsonData() ?? Data()
     }
 }

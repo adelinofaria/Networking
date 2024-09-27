@@ -31,7 +31,8 @@ import Testing
 
     // MARK: Tests
 
-    @Test func requestData() async throws {
+    @Test
+    func requestPlumbing() async throws {
 
         let url = try #require(URL(string: "https://domain.toplevel/path1?query=item"))
 
@@ -42,18 +43,18 @@ import Testing
         #expect(result != nil)
     }
 
-    @Test func requestNoResult() async throws {
+    @Test
+    func requestNone() async throws {
 
         let url = try #require(URL(string: "https://domain.toplevel/path2?query=item"))
 
         await Self.urlSessionMock.registerMock(url: url, data: Data())
 
-        let result: NoResult = try await self.networking.request(.get(url: url))
-
-        #expect(result != nil)
+        let _: None = try await self.networking.request(.get(url: url))
     }
 
-    @Test func requestDecodable() async throws {
+    @Test
+    func requestDecodable() async throws {
 
         let url = try #require(URL(string: "https://domain.toplevel/path3?query=item"))
 
@@ -61,39 +62,71 @@ import Testing
 
         let result: DecodableObject = try await self.networking.request(.get(url: url))
 
-        #expect(result != nil)
+        #expect(result.a == true)
+        #expect(result.b == 1)
+        #expect(result.c == "abc")
     }
 
-    @Test func requestResultNoResult() async throws {
+    @Test
+    func requestResultNone() async throws {
 
         let url = try #require(URL(string: "https://domain.toplevel/path4?query=item"))
 
         await Self.urlSessionMock.registerMock(url: url, data: Data())
 
-        let result: Result<NoResult, NoError> = try await self.networking.request(.get(url: url))
-
-        #expect(result != nil)
+        let _: Result<None, NoneError> = try await self.networking.request(.get(url: url))
     }
 
-    @Test func requestResultDecodable() async throws {
+    @Test
+    func requestResultDecodable() async throws {
 
         let url = try #require(URL(string: "https://domain.toplevel/path5?query=item"))
 
         await Self.urlSessionMock.registerMock(url: url, data: DecodableObject.sampleData)
 
-        let result: Result<DecodableObject, NoError> = try await self.networking.request(.get(url: url))
+        let result: Result<DecodableObject, NoneError> = try await self.networking.request(.get(url: url))
 
-        #expect(result != nil)
+        switch result {
+        case .success(let result):
+            #expect(result.a == true)
+            #expect(result.b == 1)
+            #expect(result.c == "abc")
+        case .failure(let error):
+            Issue.record(error)
+        }
     }
 
-    @Test func cancelation() async throws {
+    @Test
+    func requestNetworkResultDecodable() async throws {
+
+        let url = try #require(URL(string: "https://domain.toplevel/path3?query=item"))
+
+        await Self.urlSessionMock.registerMock(url: url, data: DecodableObject.sampleData)
+
+        let networkResult: NetworkResult<DecodableObject, NoneError> = try await self.networking.request(.get(url: url))
+
+        switch networkResult.result {
+        case .success(let result):
+            #expect(result.a == true)
+            #expect(result.b == 1)
+            #expect(result.c == "abc")
+        case .failure(let error):
+            Issue.record(error)
+        }
+
+        #expect(networkResult.httpStatusCode == 200)
+        #expect(networkResult.httpHeaders.count == 0)
+    }
+
+    @Test
+    func cancelation() async throws {
 
         let url = try #require(URL(string: "https://domain.toplevel/path6?query=item"))
 
         let task = Task {
 
             do {
-                let _: NoResult = try await self.networking.request(.get(url: url))
+                let _: None = try await self.networking.request(.get(url: url))
                 return false
             } catch is NetworkingError {
                 return false

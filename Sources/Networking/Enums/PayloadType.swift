@@ -20,25 +20,3 @@ public struct HTTPHeader: Equatable {
     let name: String
     let value: String
 }
-
-public enum PayloadType {
-
-    case queryString([QueryItem])
-    case headers([HTTPHeader])
-    case body(any NetworkEncodable)
-}
-
-extension PayloadType: Equatable {
-    public static func == (lhs: PayloadType, rhs: PayloadType) -> Bool {
-
-        if case .queryString(let lhsArray) = lhs, case .queryString(let rhsArray) = rhs {
-            lhsArray == rhsArray
-        } else if case .headers(let lhsArray) = lhs, case .headers(let rhsArray) = rhs {
-            lhsArray == rhsArray
-        } else if case .body(let lhsObject) = lhs, case .body(let rhsObject) = rhs {
-            lhsObject.hashValue == rhsObject.hashValue
-        } else {
-            false
-        }
-    }
-}

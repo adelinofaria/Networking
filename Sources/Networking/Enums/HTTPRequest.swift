@@ -8,18 +8,16 @@
 
 import Foundation
 
-public typealias Payload = [PayloadType]
-
 public enum HTTPRequest {
 
-    case get(url: URL, payload: Payload? = nil)
-    case head(url: URL, payload: Payload? = nil)
-    case post(url: URL, payload: Payload? = nil)
-    case put(url: URL, payload: Payload? = nil)
-    case delete(url: URL, payload: Payload? = nil)
-    case patch(url: URL, payload: Payload? = nil)
+    case get(url: URL, query: [QueryItem]? = nil, headers: [HTTPHeader]? = nil)
+    case head(url: URL, query: [QueryItem]? = nil, headers: [HTTPHeader]? = nil)
+    case post(url: URL, query: [QueryItem]? = nil, headers: [HTTPHeader]? = nil, body: (any NetworkEncodable)? = nil)
+    case put(url: URL, query: [QueryItem]? = nil, headers: [HTTPHeader]? = nil, body: (any NetworkEncodable)? = nil)
+    case delete(url: URL, query: [QueryItem]? = nil, headers: [HTTPHeader]? = nil)
+    case patch(url: URL, query: [QueryItem]? = nil, headers: [HTTPHeader]? = nil, body: (any NetworkEncodable)? = nil)
 
-    public var rawValue: String {
+    var rawValue: String {
         switch self {
         case .get:
             "GET"
@@ -41,60 +39,94 @@ extension HTTPRequest {
 
     var url: URL {
         switch self {
-        case .get(url: let url, payload: _):
+        case .get(url: let url, query: _, headers: _):
             url
-        case .head(url: let url, payload: _):
+        case .head(url: let url, query: _, headers: _):
             url
-        case .post(url: let url, payload: _):
+        case .post(url: let url, query: _, headers: _, body: _):
             url
-        case .put(url: let url, payload: _):
+        case .put(url: let url, query: _, headers: _, body: _):
             url
-        case .delete(url: let url, payload: _):
+        case .delete(url: let url, query: _, headers: _):
             url
-        case .patch(url: let url, payload: _):
+        case .patch(url: let url, query: _, headers: _, body: _):
             url
         }
     }
 
-    var payload: Payload? {
+    var query: [QueryItem]? {
+
         switch self {
-        case .get(url: _, payload: let payload):
-            payload
-        case .head(url: _, payload: let payload):
-            payload
-        case .post(url: _, payload: let payload):
-            payload
-        case .put(url: _, payload: let payload):
-            payload
-        case .delete(url: _, payload: let payload):
-            payload
-        case .patch(url: _, payload: let payload):
-            payload
+        case .get(url: _, query: let query, headers: _):
+            query
+        case .head(url: _, query: let query, headers: _):
+            query
+        case .post(url: _, query: let query, headers: _, body: _):
+            query
+        case .put(url: _, query: let query, headers: _, body: _):
+            query
+        case .delete(url: _, query: let query, headers: _):
+            query
+        case .patch(url: _, query: let query, headers: _, body: _):
+            query
+        }
+    }
+
+    var headers: [HTTPHeader]? {
+
+        switch self {
+        case .get(url: _, query: _, headers: let headers):
+            headers
+        case .head(url: _, query: _, headers: let headers):
+            headers
+        case .post(url: _, query: _, headers: let headers, body: _):
+            headers
+        case .put(url: _, query: _, headers: let headers, body: _):
+            headers
+        case .delete(url: _, query: _, headers: let headers):
+            headers
+        case .patch(url: _, query: _, headers: let headers, body: _):
+            headers
+        }
+    }
+
+    var body: (any NetworkEncodable)? {
+
+        switch self {
+        case .get(url: _, query: _, headers: _):
+            nil
+        case .head(url: _, query: _, headers: _):
+            nil
+        case .post(url: _, query: _, headers: _, body: let body):
+            body
+        case .put(url: _, query: _, headers: _, body: let body):
+            body
+        case .delete(url: _, query: _, headers: _):
+            nil
+        case .patch(url: _, query: _, headers: _, body: let body):
+            body
         }
     }
 
     func urlRequest(with config: Config) async throws -> URLRequest {
 
-        let url = self.url
-        let payloadTypes = self.payload
-
-        var urlRequest = URLRequest(url: url)
+        var urlRequest = URLRequest(url: self.url)
 
         urlRequest.httpMethod = self.rawValue
 
-        if let payloadTypes {
-            for payloadType in payloadTypes {
-                switch payloadType {
-                case .queryString(let queryString):
-                    try urlRequest.setQueryString(with: queryString, mergePolicy: config.queryItemMergePolicy)
-                case .headers(let headers):
-                    // add user-agent here
-                    // maybe have shared headers in config and merge them here
-                    urlRequest.setHeaders(headers: headers)
-                case .body(let object):
-                    try await urlRequest.setBody(object: object)
-                }
-            }
+        if let query = self.query {
+
+            try urlRequest.setQuery(with: query, mergePolicy: config.queryItemMergePolicy)
+        }
+
+        if let headers = self.headers {
+            // add user-agent here
+            // maybe have shared headers in config and merge them here
+            urlRequest.setHeaders(headers: headers)
+        }
+
+        if let body = self.body {
+            try await urlRequest.setBody(object: body)
         }
 
         return urlRequest

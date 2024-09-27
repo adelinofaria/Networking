@@ -36,20 +36,13 @@ extension URL {
         "PATCH"
     ]
 
-    static let allPayloads: [Payload] = [
-        [],
-        [.queryString([.init(name: "a", value: "1")])],
-        [.headers([.init(name: "b", value: "2")])],
-        [.body(EncodableObject.sample)],
-        [.queryString([.init(name: "a", value: "1")]), .headers([.init(name: "b", value: "2")]), .body(EncodableObject.sample)],
-    ]
-
-    static let allPayloadsExpectations = [
-        (URL.sample, [:], nil),
-        (URL(string: "https://host.domain/path?q=abc&a=1")!, [:], nil),
-        (URL.sample, ["b": "2"], nil),
-        (URL.sample, ["Content-Type": "application/json"], EncodableObject.sampleData),
-        (URL(string: "https://host.domain/path?q=abc&a=1")!, ["b": "2", "Content-Type": "application/json"], EncodableObject.sampleData),
+    static let encodableBodyExpectation: [([String: String], (any NetworkEncodable)?)] = [
+        ([:], nil),
+        ([:], nil),
+        (["Content-Type": "application/json"], EncodableObject(a: true, b: 1, c: "abc")),
+        (["Content-Type": "application/json"], EncodableObject(a: true, b: 1, c: "abc")),
+        ([:], nil),
+        (["Content-Type": "application/json"], EncodableObject(a: true, b: 1, c: "abc"))
     ]
 
     // MARK: Tests
@@ -59,7 +52,9 @@ extension URL {
 
         #expect(httpRequest.rawValue == method)
         #expect(httpRequest.url == .sample)
-        #expect(httpRequest.payload == nil)
+        #expect(httpRequest.query == nil)
+        #expect(httpRequest.headers == nil)
+        #expect(httpRequest.body == nil)
 
         let urlRequest = try await httpRequest.urlRequest(with: .init())
 
@@ -69,18 +64,122 @@ extension URL {
         #expect(urlRequest.httpBody == nil)
     }
 
-    @Test("All payloads with a get", arguments: zip(Self.allPayloads, Self.allPayloadsExpectations))
-    func urlRequestNoPayload(payload: Payload, expectation: (URL, [String : String], Data?)) async throws {
+    @Test("All methods with queryString", arguments: Self.allMethods)
+    func urlRequestWithQuery(httpRequest: HTTPRequest) async throws {
 
-        let httpRequest = HTTPRequest.get(url: .sample, payload: payload)
+        let query: [QueryItem] = [.init(name: "a", value: "1")]
 
-        #expect(httpRequest.url == .sample)
-        #expect(httpRequest.payload == payload)
+        let payloadHTTPRequest = httpRequest.setting(query: query)
 
-        let urlRequest = try await httpRequest.urlRequest(with: .init())
+        #expect(payloadHTTPRequest.url == .sample)
+        #expect(payloadHTTPRequest.query == query)
+        #expect(payloadHTTPRequest.headers == nil)
+        #expect(payloadHTTPRequest.body == nil)
 
-        #expect(urlRequest.url == expectation.0)
-        #expect(urlRequest.allHTTPHeaderFields == expectation.1)
-        #expect(urlRequest.httpBody?.count == expectation.2?.count)
+        let urlRequest = try await payloadHTTPRequest.urlRequest(with: .init())
+
+        #expect(urlRequest.url == URL(string: "https://host.domain/path?q=abc&a=1"))
+        #expect(urlRequest.allHTTPHeaderFields == [:])
+        #expect(urlRequest.httpBody == nil)
+    }
+
+    @Test("All methods with headers", arguments: Self.allMethods)
+    func urlRequestWithHeaders(httpRequest: HTTPRequest) async throws {
+
+        let headers: [HTTPHeader] = [.init(name: "b", value: "2")]
+
+        let payloadHTTPRequest = httpRequest.setting(headers: headers)
+
+        #expect(payloadHTTPRequest.url == .sample)
+        #expect(payloadHTTPRequest.query == nil)
+        #expect(payloadHTTPRequest.headers == headers)
+        #expect(payloadHTTPRequest.body == nil)
+
+        let urlRequest = try await payloadHTTPRequest.urlRequest(with: .init())
+
+        #expect(urlRequest.url == .sample)
+        #expect(urlRequest.allHTTPHeaderFields == ["b": "2"])
+        #expect(urlRequest.httpBody == nil)
+    }
+
+    @Test("All methods with body", arguments: zip(Self.allMethods, Self.encodableBodyExpectation))
+    func urlRequestWithBody(httpRequest: HTTPRequest, expectation: ([String: String], (any NetworkEncodable)?)) async throws {
+
+        let body = EncodableObject(a: true, b: 1, c: "abc")
+
+        let payloadHTTPRequest = httpRequest.setting(body: body)
+
+        #expect(payloadHTTPRequest.url == .sample)
+        #expect(payloadHTTPRequest.query == nil)
+        #expect(payloadHTTPRequest.headers == nil)
+        #expect((payloadHTTPRequest.body == nil) == (expectation.1 == nil))
+
+        let urlRequest = try await payloadHTTPRequest.urlRequest(with: .init())
+        let expectedByteCount = try? await expectation.1?.encode().count
+
+        #expect(urlRequest.url == .sample)
+        #expect(urlRequest.allHTTPHeaderFields == expectation.0)
+        #expect(urlRequest.httpBody?.count == expectedByteCount)
+    }
+}
+
+
+extension HTTPRequest {
+
+    func setting(query: [QueryItem]) -> Self {
+
+        switch self {
+
+        case .get(url: let url, query: _, headers: let headers):
+            .get(url: url, query: query, headers: headers)
+        case .head(url: let url, query: _, headers: let headers):
+            .head(url: url, query: query, headers: headers)
+        case .post(url: let url, query: _, headers: let headers, body: let body):
+            .post(url: url, query: query, headers: headers, body: body)
+        case .put(url: let url, query: _, headers: let headers, body: let body):
+            .put(url: url, query: query, headers: headers, body: body)
+        case .delete(url: let url, query: _, headers: let headers):
+            .delete(url: url, query: query, headers: headers)
+        case .patch(url: let url, query: _, headers: let headers, body: let body):
+            .patch(url: url, query: query, headers: headers, body: body)
+        }
+    }
+
+    func setting(headers: [HTTPHeader]) -> Self {
+
+        switch self {
+
+        case .get(url: let url, query: let query, headers: _):
+            .get(url: url, query: query, headers: headers)
+        case .head(url: let url, query: let query, headers: _):
+            .head(url: url, query: query, headers: headers)
+        case .post(url: let url, query: let query, headers: _, body: let body):
+            .post(url: url, query: query, headers: headers, body: body)
+        case .put(url: let url, query: let query, headers: _, body: let body):
+            .put(url: url, query: query, headers: headers, body: body)
+        case .delete(url: let url, query: let query, headers: _):
+            .delete(url: url, query: query, headers: headers)
+        case .patch(url: let url, query: let query, headers: _, body: let body):
+            .patch(url: url, query: query, headers: headers, body: body)
+        }
+    }
+
+    func setting(body: any NetworkEncodable) -> Self {
+
+        switch self {
+
+        case .get(url: let url, query: let query, headers: let headers):
+            .get(url: url, query: query, headers: headers)
+        case .head(url: let url, query: let query, headers: let headers):
+            .head(url: url, query: query, headers: headers)
+        case .post(url: let url, query: let query, headers: let headers, body: _):
+            .post(url: url, query: query, headers: headers, body: body)
+        case .put(url: let url, query: let query, headers: let headers, body: _):
+            .put(url: url, query: query, headers: headers, body: body)
+        case .delete(url: let url, query: let query, headers: let headers):
+            .delete(url: url, query: query, headers: headers)
+        case .patch(url: let url, query: let query, headers: let headers, body: _):
+            .patch(url: url, query: query, headers: headers, body: body)
+        }
     }
 }

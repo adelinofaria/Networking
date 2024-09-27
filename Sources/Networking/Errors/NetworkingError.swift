@@ -14,4 +14,5 @@ public enum NetworkingError: Error {
     case authentication(error: Error)
     case urlSessionError(error: Error)
     case invalidResponse(data: Data, response: URLResponse)
+    case unexpectedStatusCode(data: Data, response: HTTPURLResponse)
 }
