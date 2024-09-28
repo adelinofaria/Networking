@@ -36,7 +36,14 @@ import WatchKit
     func userAgentForCurrentEnvironment() async throws {
 
         let executableName = ProcessInfo.processInfo.processName
-        let executableVersion = Bundle.main.infoDictionary?[Constants.bundleShortVersion] as? String ?? "1.0"
+
+        let productIdentifier: String
+
+        if let executableVersion = Bundle.main.infoDictionary?[Constants.bundleShortVersion] as? String {
+            productIdentifier = "\(executableName)/\(executableVersion)"
+        } else {
+            productIdentifier = "\(executableName)"
+        }
 
         let osVersion = ProcessInfo.processInfo.operatingSystemVersion.versionString
 
@@ -48,7 +55,7 @@ import WatchKit
             let osName = await UIDevice.current.systemName
             let screenScale = await UIScreen.main.scale
 
-            let expectation = "\(executableName)/\(executableVersion) (\(deviceModel); \(osName)/\(osVersion); Scale/\(String(format: "%0.2f", screenScale)))"
+            let expectation = "\(productIdentifier) (\(deviceModel); \(osName)/\(osVersion); Scale/\(String(format: "%0.2f", screenScale)))"
 
             #expect(userAgent == expectation)
 
@@ -56,7 +63,7 @@ import WatchKit
 
             let screenScale = try #require(NSScreen.main?.backingScaleFactor)
 
-            let expectation = "\(executableName)/\(executableVersion) (Macintosh; MacOS/\(osVersion); Scale/\(String(format: "%0.2f", screenScale)))"
+            let expectation = "\(productIdentifier) (Macintosh; MacOS/\(osVersion); Scale/\(String(format: "%0.2f", screenScale)))"
 
             #expect(userAgent == expectation)
 
@@ -66,7 +73,7 @@ import WatchKit
             let osName = WKInterfaceDevice.current().systemName
             let screenScale = WKInterfaceDevice.current().screenScale
 
-            let expectation = "\(executableName)/\(executableVersion) (\(deviceModel); \(osName)/\(osVersion); Scale/\(String(format: "%0.2f", screenScale)))"
+            let expectation = "\(productIdentifier) (\(deviceModel); \(osName)/\(osVersion); Scale/\(String(format: "%0.2f", screenScale)))"
 
             #expect(userAgent == expectation)
 
