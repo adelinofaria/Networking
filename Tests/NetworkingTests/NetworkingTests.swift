@@ -142,3 +142,20 @@ import Testing
         #expect(taskThrows == true)
     }
 }
+
+
+/*
+ [ ] Networking public interfaces
+ [ ] Networking authentication logic
+ [ ] Netowkring decoding logic
+ [ ] Netowkring request logic (success, failure, throwing, cancelation
+ [ ] Config
+ [ ] Extensions Array+URLQueryItem
+ [ ] Extensions URL+QueryItem
+ [ ] Extensions URLRequest+Mutating
+ [ ] HTTPHeader
+ [ ] QueryItem
+ [ ] HTTPRequest
+ [ ]
+ [ ] all throwables should be testable
+ */

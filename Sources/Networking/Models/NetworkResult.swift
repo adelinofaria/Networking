@@ -9,6 +9,7 @@
 import Foundation
 
 public struct NetworkResult<T: NetworkDecodable, E: Error & NetworkDecodable> {
+
     let result: Result<T, E>
     let httpStatusCode: Int
     let httpHeaders: [AnyHashable: Any]

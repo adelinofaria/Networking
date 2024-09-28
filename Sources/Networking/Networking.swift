@@ -65,13 +65,14 @@ public final actor Networking {
                      httpStatusCode: httpURLResponse.statusCode,
                      httpHeaders: httpURLResponse.allHeaderFields)
     }
-
 }
 
 // TODO: NSData encodable
-// TODO: error reporting hook
-// TODO: monitoring mechanism - sub package?
+
+// TODO: background validation or control
+// TODO: timeout config
+
+// TODO: Error types improve (more)
+
+// TODO: network service type and cellular
 // TODO: QoS class?
-// TODO: request context?
-// TODO: User Agent logic
-// TODO: Multipart upload?

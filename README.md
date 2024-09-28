@@ -25,10 +25,22 @@ _Unopinated networking framework with readability, easy of use, adaptability and
 
 ## Features
 
-- [x] Modular networking
-- [x] Authentication support without coupling
+- [x] No external dependencies
+- [x] No requirements on local model serialization
+- [x] No requirements on HTTP data content-type
+- [x] Parses expected api models & api errors seamlessly 
+- [x] Decoupled authentication
+- [x] Public interfaces extremely readable
+- [x] Full async/await support
+- [x] Full cancelation support
+- [x] Full error handling through throw
 - [x] Support for iOS and macOS
--
+- [ ] Configurable timeout, successResponseRange, Accept/Content-Type headers
+- [ ] Caching support
+- [ ] Response validation of Content-Type and statusCode
+- [ ] Upload/Download tasks & multipart upload
+- [ ] Extensive documentation
+- [ ] Subpackages for common integrations (JSONSerialization, Basic Authentication, OAuth)
 - [ ] Add sophisticated and extensive examples into Sources/Examples
 - [ ] Support for Linux
 - [ ] Support for watchOS

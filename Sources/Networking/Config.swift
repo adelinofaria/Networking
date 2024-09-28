@@ -5,13 +5,6 @@
 //  Created by Adelino Faria on 24/09/2024.
 //
 
-/*
- Configure timeout
- Configure sucess response range 200...299 default
- Configure Accept, Content-Type, User-Agent
-
- */
-
 public struct Config {
 
     public enum MergePolicy {

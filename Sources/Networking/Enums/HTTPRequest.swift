@@ -113,15 +113,15 @@ extension HTTPRequest {
         var urlRequest = URLRequest(url: self.url)
 
         urlRequest.httpMethod = self.rawValue
+        urlRequest.setValue(await HTTPConstants.userAgent, forHTTPHeaderField: HTTPConstants.userAgentHeaderKey)
+
+        // FIXME: maybe have shared headers in config and add them here
 
         if let query = self.query {
-
             try urlRequest.setQuery(with: query, mergePolicy: config.queryItemMergePolicy)
         }
 
         if let headers = self.headers {
-            // add user-agent here
-            // maybe have shared headers in config and merge them here
             urlRequest.setHeaders(headers: headers)
         }
 

@@ -12,9 +12,9 @@ internal extension Networking {
     func authenticationLogic(urlRequest: URLRequest) async throws -> URLRequest {
 
         do {
-            let authenticatedURLRequest = try await authentication?.authenticate(urlRequest: urlRequest)
+            let authenticated = try await self.authentication?.authenticate(urlRequest: urlRequest)
 
-            return authenticatedURLRequest ?? urlRequest
+            return authenticated ?? urlRequest
         } catch {
             throw NetworkingError.authentication(error: error)
         }
