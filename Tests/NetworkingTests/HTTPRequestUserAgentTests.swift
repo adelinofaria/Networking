@@ -36,7 +36,7 @@ import WatchKit
     func userAgentForCurrentEnvironment() async throws {
 
         let executableName = ProcessInfo.processInfo.processName
-        let executableVersion = try #require(Bundle.main.infoDictionary?[Constants.bundleShortVersion] as? String)
+        let executableVersion = Bundle.main.infoDictionary?[Constants.bundleShortVersion] as? String ?? "1.0"
 
         let osVersion = ProcessInfo.processInfo.operatingSystemVersion.versionString
 
