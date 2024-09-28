@@ -14,7 +14,8 @@ extension URL {
     static var sample = URL(string: "https://host.domain/path?q=abc")!
 }
 
-@Suite struct HTTPRequestTests {
+@Suite
+struct HTTPRequestTests {
 
     // MARK: Setup
 
@@ -58,9 +59,11 @@ extension URL {
 
         let urlRequest = try await httpRequest.urlRequest(with: .init())
 
+        let expectedHeaders = await [:].mergedDefaultHeaders()
+
         #expect(urlRequest.httpMethod == method)
         #expect(urlRequest.url == .sample)
-        #expect(urlRequest.allHTTPHeaderFields == [:])
+        #expect(urlRequest.allHTTPHeaderFields == expectedHeaders)
         #expect(urlRequest.httpBody == nil)
     }
 
@@ -78,8 +81,10 @@ extension URL {
 
         let urlRequest = try await payloadHTTPRequest.urlRequest(with: .init())
 
+        let expectedHeaders = await [:].mergedDefaultHeaders()
+
         #expect(urlRequest.url == URL(string: "https://host.domain/path?q=abc&a=1"))
-        #expect(urlRequest.allHTTPHeaderFields == [:])
+        #expect(urlRequest.allHTTPHeaderFields == expectedHeaders)
         #expect(urlRequest.httpBody == nil)
     }
 
@@ -97,8 +102,10 @@ extension URL {
 
         let urlRequest = try await payloadHTTPRequest.urlRequest(with: .init())
 
+        let expectedHeaders = await ["b": "2"].mergedDefaultHeaders()
+
         #expect(urlRequest.url == .sample)
-        #expect(urlRequest.allHTTPHeaderFields == ["b": "2"])
+        #expect(urlRequest.allHTTPHeaderFields == expectedHeaders)
         #expect(urlRequest.httpBody == nil)
     }
 
@@ -115,71 +122,28 @@ extension URL {
         #expect((payloadHTTPRequest.body == nil) == (expectation.1 == nil))
 
         let urlRequest = try await payloadHTTPRequest.urlRequest(with: .init())
+
+        let expectedHeaders = await expectation.0.mergedDefaultHeaders()
         let expectedByteCount = try? await expectation.1?.encode().count
 
         #expect(urlRequest.url == .sample)
-        #expect(urlRequest.allHTTPHeaderFields == expectation.0)
+        #expect(urlRequest.allHTTPHeaderFields == expectedHeaders)
         #expect(urlRequest.httpBody?.count == expectedByteCount)
     }
 }
 
+// MARK: Helper Functions
 
-extension HTTPRequest {
+extension Dictionary where Key == String, Value == String {
 
-    func setting(query: [QueryItem]) -> Self {
+    func mergedDefaultHeaders() async -> [String: String] {
 
-        switch self {
+        let defaultHeaders = [
+            "User-Agent": await HTTPConstants.userAgent
+        ]
 
-        case .get(url: let url, query: _, headers: let headers):
-            .get(url: url, query: query, headers: headers)
-        case .head(url: let url, query: _, headers: let headers):
-            .head(url: url, query: query, headers: headers)
-        case .post(url: let url, query: _, headers: let headers, body: let body):
-            .post(url: url, query: query, headers: headers, body: body)
-        case .put(url: let url, query: _, headers: let headers, body: let body):
-            .put(url: url, query: query, headers: headers, body: body)
-        case .delete(url: let url, query: _, headers: let headers):
-            .delete(url: url, query: query, headers: headers)
-        case .patch(url: let url, query: _, headers: let headers, body: let body):
-            .patch(url: url, query: query, headers: headers, body: body)
-        }
-    }
+        let merged = self.merging(defaultHeaders) { $1 }
 
-    func setting(headers: [HTTPHeader]) -> Self {
-
-        switch self {
-
-        case .get(url: let url, query: let query, headers: _):
-            .get(url: url, query: query, headers: headers)
-        case .head(url: let url, query: let query, headers: _):
-            .head(url: url, query: query, headers: headers)
-        case .post(url: let url, query: let query, headers: _, body: let body):
-            .post(url: url, query: query, headers: headers, body: body)
-        case .put(url: let url, query: let query, headers: _, body: let body):
-            .put(url: url, query: query, headers: headers, body: body)
-        case .delete(url: let url, query: let query, headers: _):
-            .delete(url: url, query: query, headers: headers)
-        case .patch(url: let url, query: let query, headers: _, body: let body):
-            .patch(url: url, query: query, headers: headers, body: body)
-        }
-    }
-
-    func setting(body: any NetworkEncodable) -> Self {
-
-        switch self {
-
-        case .get(url: let url, query: let query, headers: let headers):
-            .get(url: url, query: query, headers: headers)
-        case .head(url: let url, query: let query, headers: let headers):
-            .head(url: url, query: query, headers: headers)
-        case .post(url: let url, query: let query, headers: let headers, body: _):
-            .post(url: url, query: query, headers: headers, body: body)
-        case .put(url: let url, query: let query, headers: let headers, body: _):
-            .put(url: url, query: query, headers: headers, body: body)
-        case .delete(url: let url, query: let query, headers: let headers):
-            .delete(url: url, query: query, headers: headers)
-        case .patch(url: let url, query: let query, headers: let headers, body: _):
-            .patch(url: url, query: query, headers: headers, body: body)
-        }
+        return merged
     }
 }
