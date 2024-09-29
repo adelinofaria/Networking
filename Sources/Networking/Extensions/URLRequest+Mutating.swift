@@ -15,6 +15,13 @@ extension URLRequest {
         try self.url?.setQuery(with: query, mergePolicy: mergePolicy)
     }
 
+    mutating func setHeaders(headers: [String: String]) {
+
+        headers.forEach {
+            self.setValue($0.value, forHTTPHeaderField: $0.key)
+        }
+    }
+
     mutating func setHeaders(headers: [HTTPHeader]) {
 
         headers.forEach {
