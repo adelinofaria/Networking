@@ -10,26 +10,28 @@ import Foundation
 
 internal extension Networking {
 
-    func requestLogic(urlRequest: URLRequest) async throws -> (Data, HTTPURLResponse) {
+    func requestLogic(urlRequest: URLRequest) async throws(NetworkingError) -> (Data, HTTPURLResponse) {
+
+        let (data, response): (Data, URLResponse)
 
         do {
             try Task.checkCancellation()
 
-            let (data, response) = try await self.session.data(for: urlRequest)
-
-            if let httpURLResponse = response as? HTTPURLResponse {
-
-                return (data, httpURLResponse)
-
-            } else {
-
-                throw NetworkingError.invalidResponse(data: data, response: response)
-            }
+            (data, response) = try await self.session.data(for: urlRequest)
 
         } catch let error as CancellationError {
-            throw error
+            throw .canceled(error: error)
         } catch {
-            throw NetworkingError.urlSessionError(error: error)
+            throw .urlSessionError(error: error)
+        }
+
+        if let httpURLResponse = response as? HTTPURLResponse {
+
+            return (data, httpURLResponse)
+
+        } else {
+
+            throw .invalidResponse(data: data, response: response)
         }
     }
 }

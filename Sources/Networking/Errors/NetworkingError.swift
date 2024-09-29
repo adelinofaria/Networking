@@ -10,9 +10,15 @@ import Foundation
 
 public enum NetworkingError: Error {
     case unknown
+    case generic(error: Error)
+    case canceled(error: CancellationError)
     case invalidURLRequest(error: Error)
-    case authentication(error: Error)
     case urlSessionError(error: Error)
     case invalidResponse(data: Data, response: URLResponse)
-    case unexpectedStatusCode(data: Data, response: HTTPURLResponse)
+
+    // Wrapped errors
+    case urlRequest(error: NetworkingURLRequestError)
+    case authentication(error: NetworkAuthenticationError)
+    case decodable(error: NetworkDecodableError)
+    case encodable(error: NetworkEncodableError)
 }

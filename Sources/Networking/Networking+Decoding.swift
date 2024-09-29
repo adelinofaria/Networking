@@ -10,7 +10,7 @@ import Foundation
 
 internal extension Networking {
 
-    func decodeLogic<T: NetworkDecodable>(data: Data, httpURLResponse: HTTPURLResponse) async throws -> T {
+    func decodeLogic<T: NetworkDecodable>(data: Data, httpURLResponse: HTTPURLResponse) async throws(NetworkDecodableError) -> T {
 
         if 200...299 ~= httpURLResponse.statusCode {
 
@@ -19,11 +19,11 @@ internal extension Networking {
             return object
 
         } else {
-            throw NetworkingError.unexpectedStatusCode(data: data, response: httpURLResponse)
+            throw .unexpectedStatusCode(data: data, response: httpURLResponse)
         }
     }
 
-    func decodeLogic<T: NetworkDecodable, E: NetworkDecodable>(data: Data, httpURLResponse: HTTPURLResponse) async throws -> Result<T, E> {
+    func decodeLogic<T: NetworkDecodable, E: NetworkDecodable>(data: Data, httpURLResponse: HTTPURLResponse) async throws(NetworkDecodableError) -> Result<T, E> {
 
         if 200...299 ~= httpURLResponse.statusCode {
 

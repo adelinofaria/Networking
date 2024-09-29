@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum NetworkingURLRequestError: Error {
+public enum NetworkingURLRequestError: Error {
     case unknown
     case failedToCreateURLComponents
     case failedToCreateNewURL

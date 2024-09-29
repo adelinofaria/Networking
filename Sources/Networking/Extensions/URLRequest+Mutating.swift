@@ -29,7 +29,7 @@ extension URLRequest {
         }
     }
 
-    mutating func setBody(object: any NetworkEncodable) async throws {
+    mutating func setBody(object: any NetworkEncodable) async throws(NetworkEncodableError) {
 
         self.httpBody = try await object.encode()
 

@@ -83,7 +83,7 @@ public struct HTTPRequest {
         self.timeout = timeout
     }
 
-    func urlRequest(with config: Config) async throws -> URLRequest {
+    func urlRequest(with config: Config) async throws(NetworkingError) -> URLRequest {
 
         var urlRequest = URLRequest(url: self.url)
 
@@ -93,7 +93,11 @@ public struct HTTPRequest {
         urlRequest.timeoutInterval = self.timeout ?? config.timeout
 
         if let query = self.query {
-            try urlRequest.setQuery(with: query, mergePolicy: config.queryItemMergePolicy)
+            do {
+                try urlRequest.setQuery(with: query, mergePolicy: config.queryItemMergePolicy)
+            } catch {
+                throw .urlRequest(error: error)
+            }
         }
 
         if let headers = self.headers {
@@ -101,7 +105,11 @@ public struct HTTPRequest {
         }
 
         if let body = self.body {
-            try await urlRequest.setBody(object: body)
+            do {
+                try await urlRequest.setBody(object: body)
+            } catch {
+                throw .encodable(error: error)
+            }
         }
 
         return urlRequest

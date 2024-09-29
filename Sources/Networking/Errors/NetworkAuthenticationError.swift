@@ -10,4 +10,5 @@ import Foundation
 
 public enum NetworkAuthenticationError: Error {
     case unknown
+    case generic(error: Error)
 }

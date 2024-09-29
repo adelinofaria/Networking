@@ -10,14 +10,10 @@ import Foundation
 
 internal extension Networking {
 
-    func authenticationLogic(urlRequest: URLRequest) async throws -> URLRequest {
+    func authenticationLogic(urlRequest: URLRequest) async throws(NetworkAuthenticationError) -> URLRequest {
 
-        do {
-            let authenticated = try await self.authentication?.authenticate(urlRequest: urlRequest)
+        let authenticated = try await self.authentication?.authenticate(urlRequest: urlRequest)
 
-            return authenticated ?? urlRequest
-        } catch {
-            throw NetworkingError.authentication(error: error)
-        }
+        return authenticated ?? urlRequest
     }
 }
