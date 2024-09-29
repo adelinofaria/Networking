@@ -1,5 +1,5 @@
 //
-//  NetworkResult.swift
+//  HTTPResponse.swift
 //  Networking
 //
 //  Created by Adelino Faria on 27/09/2024.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct NetworkResult<T: NetworkDecodable, E: Error & NetworkDecodable> {
+public struct HTTPResponse<T: NetworkDecodable, E: Error & NetworkDecodable> {
 
     let result: Result<T, E>
     let httpStatusCode: Int

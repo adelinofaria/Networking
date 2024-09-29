@@ -53,9 +53,9 @@ public final actor Networking {
         return try await self.decodeLogic(data: data, httpURLResponse: httpURLResponse)
     }
 
-    // MARK: Return objects in NetworkResult Wrapper object
+    // MARK: Return objects in HTTPResponse Wrapper object
 
-    public func request<T: NetworkDecodable, E: NetworkDecodable>(_ request: HTTPRequest) async throws -> NetworkResult<T, E> {
+    public func request<T: NetworkDecodable, E: NetworkDecodable>(_ request: HTTPRequest) async throws -> HTTPResponse<T, E> {
 
         let (data, httpURLResponse) = try await self.request(request)
 

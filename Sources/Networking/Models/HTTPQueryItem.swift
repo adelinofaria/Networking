@@ -1,5 +1,5 @@
 //
-//  QueryItem.swift
+//  HTTPQueryItem.swift
 //  Networking
 //
 //  Created by Adelino Faria on 27/09/2024.
@@ -10,7 +10,7 @@ import Foundation
 
 /// Struct to store queryString's keys and values.
 /// We store this in a struct as opposed to dictionaries to maintain order and uniqueness of it's keys and values
-public struct QueryItem: Equatable {
+public struct HTTPQueryItem: Equatable {
     let name: String
     let value: String
 }

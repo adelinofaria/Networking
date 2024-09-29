@@ -10,7 +10,7 @@ import Foundation
 
 extension Array where Element == URLQueryItem {
 
-    mutating func append(_ query: [QueryItem], policy: Config.MergePolicy) {
+    mutating func append(_ query: [HTTPQueryItem], policy: Config.MergePolicy) {
 
         let queryItems = query.map {
             URLQueryItem(name: $0.name, value: $0.value)

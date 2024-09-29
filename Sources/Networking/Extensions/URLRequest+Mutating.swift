@@ -17,7 +17,7 @@ enum NetworkingURLRequestError: Error {
 
 extension URLRequest {
 
-    mutating func setQuery(with query: [QueryItem], mergePolicy: Config.MergePolicy) throws(NetworkingURLRequestError) {
+    mutating func setQuery(with query: [HTTPQueryItem], mergePolicy: Config.MergePolicy) throws(NetworkingURLRequestError) {
 
         try self.url?.setQuery(with: query, mergePolicy: mergePolicy)
     }

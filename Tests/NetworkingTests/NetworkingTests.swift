@@ -97,15 +97,15 @@ import Testing
     }
 
     @Test
-    func requestNetworkResultDecodable() async throws {
+    func requestHTTPResponseDecodable() async throws {
 
         let url = try #require(URL(string: "https://domain.toplevel/path3?query=item"))
 
         await Self.urlSessionMock.registerMock(url: url, data: DecodableObject.sampleData)
 
-        let networkResult: NetworkResult<DecodableObject, NoneError> = try await self.networking.request(.get(url: url))
+        let httpResponse: HTTPResponse<DecodableObject, NoneError> = try await self.networking.request(.get(url: url))
 
-        switch networkResult.result {
+        switch httpResponse.result {
         case .success(let result):
             #expect(result.a == true)
             #expect(result.b == 1)
@@ -114,8 +114,8 @@ import Testing
             Issue.record(error)
         }
 
-        #expect(networkResult.httpStatusCode == 200)
-        #expect(networkResult.httpHeaders.count == 0)
+        #expect(httpResponse.httpStatusCode == 200)
+        #expect(httpResponse.httpHeaders.count == 0)
     }
 
     @Test
@@ -145,17 +145,18 @@ import Testing
 
 
 /*
+ Testing checklist
  [ ] Networking public interfaces
  [ ] Networking authentication logic
  [ ] Netowkring decoding logic
  [ ] Netowkring request logic (success, failure, throwing, cancelation
  [ ] Config
  [ ] Extensions Array+URLQueryItem
- [ ] Extensions URL+QueryItem
+ [ ] Extensions URL+HTTPQueryItem
  [ ] Extensions URLRequest+Mutating
  [ ] HTTPHeader
- [ ] QueryItem
+ [ ] HTTPQueryItem
  [ ] HTTPRequest
- [ ]
+ [ ] HTTPResponse
  [ ] all throwables should be testable
  */

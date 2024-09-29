@@ -1,5 +1,5 @@
 //
-//  URL+QueryItems.swift
+//  URL+HTTPQueryItem.swift
 //  Networking
 //
 //  Created by Adelino Faria on 24/09/2024.
@@ -10,7 +10,7 @@ import Foundation
 
 extension URL {
 
-    mutating func setQuery(with query: [QueryItem], mergePolicy: Config.MergePolicy) throws(NetworkingURLRequestError) {
+    mutating func setQuery(with query: [HTTPQueryItem], mergePolicy: Config.MergePolicy) throws(NetworkingURLRequestError) {
 
         guard var urlComponents = URLComponents(url: self, resolvingAgainstBaseURL: false) else {
             throw .failedToCreateURLComponents

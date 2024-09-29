@@ -7,64 +7,64 @@
 //
 
 import Foundation
-import Networking
+@testable import Networking
 
 extension HTTPRequest {
 
-    func setting(query: [QueryItem]) -> Self {
+    func setting(query: [HTTPQueryItem]) -> Self {
 
-        switch self {
+        switch self.method {
 
-        case .get(url: let url, query: _, headers: let headers):
-            .get(url: url, query: query, headers: headers)
-        case .head(url: let url, query: _, headers: let headers):
-            .head(url: url, query: query, headers: headers)
-        case .post(url: let url, query: _, headers: let headers, body: let body):
-            .post(url: url, query: query, headers: headers, body: body)
-        case .put(url: let url, query: _, headers: let headers, body: let body):
-            .put(url: url, query: query, headers: headers, body: body)
-        case .delete(url: let url, query: _, headers: let headers):
-            .delete(url: url, query: query, headers: headers)
-        case .patch(url: let url, query: _, headers: let headers, body: let body):
-            .patch(url: url, query: query, headers: headers, body: body)
+        case .get:
+                .get(url: self.url, query: query, headers: self.headers)
+        case .head:
+                .head(url: self.url, query: query, headers: self.headers)
+        case .post:
+                .post(url: self.url, query: query, headers: self.headers, body: self.body)
+        case .put:
+                .put(url: self.url, query: query, headers: self.headers, body: self.body)
+        case .delete:
+                .delete(url: self.url, query: query, headers: self.headers)
+        case .patch:
+                .patch(url: self.url, query: query, headers: self.headers, body: self.body)
         }
     }
 
     func setting(headers: [HTTPHeader]) -> Self {
 
-        switch self {
+        switch self.method {
 
-        case .get(url: let url, query: let query, headers: _):
-            .get(url: url, query: query, headers: headers)
-        case .head(url: let url, query: let query, headers: _):
-            .head(url: url, query: query, headers: headers)
-        case .post(url: let url, query: let query, headers: _, body: let body):
-            .post(url: url, query: query, headers: headers, body: body)
-        case .put(url: let url, query: let query, headers: _, body: let body):
-            .put(url: url, query: query, headers: headers, body: body)
-        case .delete(url: let url, query: let query, headers: _):
-            .delete(url: url, query: query, headers: headers)
-        case .patch(url: let url, query: let query, headers: _, body: let body):
-            .patch(url: url, query: query, headers: headers, body: body)
+        case .get:
+                .get(url: self.url, query: self.query, headers: headers)
+        case .head:
+                .head(url: self.url, query: self.query, headers: headers)
+        case .post:
+                .post(url: self.url, query: self.query, headers: headers, body: self.body)
+        case .put:
+                .put(url: self.url, query: self.query, headers: headers, body: self.body)
+        case .delete:
+                .delete(url: self.url, query: self.query, headers: headers)
+        case .patch:
+                .patch(url: self.url, query: self.query, headers: headers, body: self.body)
         }
     }
 
     func setting(body: any NetworkEncodable) -> Self {
 
-        switch self {
+        switch self.method {
 
-        case .get(url: let url, query: let query, headers: let headers):
-            .get(url: url, query: query, headers: headers)
-        case .head(url: let url, query: let query, headers: let headers):
-            .head(url: url, query: query, headers: headers)
-        case .post(url: let url, query: let query, headers: let headers, body: _):
-            .post(url: url, query: query, headers: headers, body: body)
-        case .put(url: let url, query: let query, headers: let headers, body: _):
-            .put(url: url, query: query, headers: headers, body: body)
-        case .delete(url: let url, query: let query, headers: let headers):
-            .delete(url: url, query: query, headers: headers)
-        case .patch(url: let url, query: let query, headers: let headers, body: _):
-            .patch(url: url, query: query, headers: headers, body: body)
+        case .get:
+                .get(url: self.url, query: self.query, headers: self.headers)
+        case .head:
+                .head(url: self.url, query: self.query, headers: self.headers)
+        case .post:
+                .post(url: self.url, query: self.query, headers: self.headers, body: body)
+        case .put:
+                .put(url: self.url, query: self.query, headers: self.headers, body: body)
+        case .delete:
+                .delete(url: self.url, query: self.query, headers: self.headers)
+        case .patch:
+                .patch(url: self.url, query: self.query, headers: self.headers, body: body)
         }
     }
 }

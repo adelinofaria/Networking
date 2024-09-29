@@ -51,7 +51,7 @@ struct HTTPRequestTests {
     @Test("All http methods with no payload", arguments: zip(Self.allMethods, Self.allMethodStrings))
     func urlRequestNoPayload(httpRequest: HTTPRequest, method: String) async throws {
 
-        #expect(httpRequest.rawValue == method)
+        #expect(httpRequest.method.rawValue == method)
         #expect(httpRequest.url == .sample)
         #expect(httpRequest.query == nil)
         #expect(httpRequest.headers == nil)
@@ -70,7 +70,7 @@ struct HTTPRequestTests {
     @Test("All methods with queryString", arguments: Self.allMethods)
     func urlRequestWithQuery(httpRequest: HTTPRequest) async throws {
 
-        let query: [QueryItem] = [.init(name: "a", value: "1")]
+        let query: [HTTPQueryItem] = [.init(name: "a", value: "1")]
 
         let payloadHTTPRequest = httpRequest.setting(query: query)
 
