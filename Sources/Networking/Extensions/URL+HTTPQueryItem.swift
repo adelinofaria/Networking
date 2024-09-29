@@ -10,7 +10,7 @@ import Foundation
 
 extension URL {
 
-    mutating func setQuery(with query: [HTTPQueryItem], mergePolicy: Config.MergePolicy) throws(NetworkingURLRequestError) {
+    mutating func setQuery(with query: [HTTPQueryItem], mergePolicy: MergePolicy) throws(NetworkingURLRequestError) {
 
         guard var urlComponents = URLComponents(url: self, resolvingAgainstBaseURL: false) else {
             throw .failedToCreateURLComponents

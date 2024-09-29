@@ -68,7 +68,6 @@ public final actor Networking {
 }
 
 // TODO: background validation or control
-// TODO: timeout config
 
 // TODO: Error types improve (more)
 

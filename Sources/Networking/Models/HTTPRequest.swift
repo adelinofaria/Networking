@@ -89,6 +89,7 @@ public struct HTTPRequest {
 
         urlRequest.httpMethod = self.method.rawValue
         urlRequest.setValue(await HTTPConstants.userAgent, forHTTPHeaderField: HTTPConstants.userAgentHeaderKey)
+        urlRequest.timeoutInterval = self.timeout ?? config.timeout
 
         // FIXME: maybe have shared headers in config and add them here
 

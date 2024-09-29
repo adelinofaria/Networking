@@ -10,7 +10,7 @@ import Foundation
 
 extension URLRequest {
 
-    mutating func setQuery(with query: [HTTPQueryItem], mergePolicy: Config.MergePolicy) throws(NetworkingURLRequestError) {
+    mutating func setQuery(with query: [HTTPQueryItem], mergePolicy: MergePolicy) throws(NetworkingURLRequestError) {
 
         try self.url?.setQuery(with: query, mergePolicy: mergePolicy)
     }

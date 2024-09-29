@@ -3,19 +3,20 @@
 //  Networking
 //
 //  Created by Adelino Faria on 24/09/2024.
+//  Copyright © 2024 Adelino Faria. All rights reserved.
 //
+
+import Foundation
 
 public struct Config {
 
-    public enum MergePolicy {
-        case append
-        case overwrite
-    }
-
     /// Although duplication of query items isn't a prefered practice, some APIs do use to some extent. To allow such behaviour set his property to `.append`.
     public let queryItemMergePolicy: MergePolicy
+    public let timeout: TimeInterval
 
-    public init(queryItemMergePolicy: MergePolicy = .overwrite) {
+    public init(queryItemMergePolicy: MergePolicy = .overwrite,
+                timeout: TimeInterval = Constants.timeoutDefault) {
         self.queryItemMergePolicy = queryItemMergePolicy
+        self.timeout = timeout
     }
 }
