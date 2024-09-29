@@ -67,8 +67,6 @@ public final actor Networking {
     }
 }
 
-// TODO: NSData encodable
-
 // TODO: background validation or control
 // TODO: timeout config
 

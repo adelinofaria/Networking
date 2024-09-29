@@ -20,16 +20,6 @@ import WatchKit
 
 @Suite struct HTTPRequestUserAgentTests {
 
-    // MARK: Setup
-
-    static let allMethods = [
-        ("iPhone", "iOS", "18.0.0", "1.00")
-    ]
-
-    static let expectedUserAgents = [
-        ""
-    ]
-
     // MARK: Tests
 
     @Test
