@@ -8,10 +8,6 @@
 
 import Foundation
 
-public enum NetworkEncodableError: Error {
-    case unknown
-}
-
 public protocol NetworkEncodable: Hashable {
 
     var contentType: String? { get }

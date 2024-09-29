@@ -8,13 +8,6 @@
 
 import Foundation
 
-enum NetworkingURLRequestError: Error {
-    case unknown
-    case failedToCreateURLComponents
-    case failedToCreateNewURL
-    case invalidURL(Error)
-}
-
 extension URLRequest {
 
     mutating func setQuery(with query: [HTTPQueryItem], mergePolicy: Config.MergePolicy) throws(NetworkingURLRequestError) {

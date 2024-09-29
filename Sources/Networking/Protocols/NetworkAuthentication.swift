@@ -8,10 +8,6 @@
 
 import Foundation
 
-public enum NetworkAuthenticationError: Error {
-    case unknown
-}
-
 public protocol NetworkAuthentication {
     func authenticate(urlRequest: URLRequest) async throws(NetworkAuthenticationError) -> URLRequest
 }

@@ -8,10 +8,6 @@
 
 import Foundation
 
-public enum NetworkDecodableError: Error {
-    case unknown
-}
-
 public protocol NetworkDecodable {
 
     static func decode(data: Data) async throws(NetworkDecodableError) -> Self

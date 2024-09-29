@@ -23,7 +23,4 @@ enum HTTPConstants {
     static let userAgent = {
         Self.userAgentLogic()
     }()
-
-    // Info.plist keys
-    static let bundleShortVersion = "CFBundleShortVersionString"
 }
