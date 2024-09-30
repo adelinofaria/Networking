@@ -9,11 +9,15 @@
 import Foundation
 import Networking
 
-struct DecodableObject: JSONNetworkDecodable {
+struct DecodableObject: JSONNetworkDecodable, Equatable {
 
     let a: Bool
     let b: Int
     let c: String
+
+    static var sample: DecodableObject {
+        .init(a: true, b: 1, c: "abc")
+    }
 
     static var sampleData: Data {
 

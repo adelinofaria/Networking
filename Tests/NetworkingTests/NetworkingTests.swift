@@ -10,7 +10,8 @@ import Foundation
 import Testing
 @testable import Networking
 
-@Suite struct NetworkingTests {
+@Suite
+struct NetworkingTests {
 
     // MARK: Setup
 

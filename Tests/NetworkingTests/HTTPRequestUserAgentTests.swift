@@ -18,7 +18,8 @@ import AppKit
 import WatchKit
 #endif
 
-@Suite struct HTTPRequestUserAgentTests {
+@Suite
+struct HTTPRequestUserAgentTests {
 
     // MARK: Tests
 
