@@ -9,6 +9,12 @@
 import Foundation
 import Networking
 
-struct DecodableErrorObject: Error, JSONNetworkDecodable, Equatable {
+struct DecodableErrorObject: Error, Equatable {
 
+}
+
+extension DecodableErrorObject: NetworkDecodable {
+    static func decode(data: Data) async throws(NetworkDecodableError) -> Self {
+        .init()
+    }
 }

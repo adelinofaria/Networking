@@ -129,18 +129,16 @@ struct NetworkingTests {
             do {
                 let _: None = try await self.networking.request(.get(url: url))
                 return false
-            } catch is NetworkingError {
-                return false
-            } catch is CancellationError {
+            } catch NetworkingError.canceled {
                 return true
+            } catch {
+                return false
             }
         }
 
         task.cancel()
 
-        let taskThrows = try await task.value
-
-        #expect(taskThrows == true)
+        #expect(await task.value == true)
     }
 }
 

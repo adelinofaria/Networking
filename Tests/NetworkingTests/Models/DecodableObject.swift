@@ -9,7 +9,7 @@
 import Foundation
 import Networking
 
-struct DecodableObject: JSONNetworkDecodable, Equatable {
+struct DecodableObject: Equatable {
 
     let a: Bool
     let b: Int
@@ -26,5 +26,22 @@ struct DecodableObject: JSONNetworkDecodable, Equatable {
             "b": 1,
             "c": "abc",
         ].jsonData() ?? Data()
+    }
+}
+
+extension DecodableObject: NetworkDecodable {
+    static func decode(data: Data) async throws(NetworkDecodableError) -> Self {
+
+        if let dictionary = data.jsonDictionary(),
+           let a = dictionary["a"] as? Bool,
+           let b = dictionary["b"] as? Int,
+           let c = dictionary["c"] as? String {
+
+            return .init(a: a, b: b, c: c)
+
+        } else {
+
+            throw .unknown
+        }
     }
 }

@@ -1,12 +1,13 @@
 //
 //  JSONNetworkEncodable.swift
-//  Networking
+//  NetworkingJSON
 //
 //  Created by Adelino Faria on 26/09/2024.
 //  Copyright © 2024 Adelino Faria. All rights reserved.
 //
 
 import Foundation
+import Networking
 
 public protocol JSONNetworkEncodable: Encodable, NetworkEncodable {}
 

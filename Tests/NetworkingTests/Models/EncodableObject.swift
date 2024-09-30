@@ -9,7 +9,7 @@
 import Foundation
 import Networking
 
-struct EncodableObject: JSONNetworkEncodable {
+struct EncodableObject {
 
     let a: Bool
     let b: Int
@@ -26,5 +26,15 @@ struct EncodableObject: JSONNetworkEncodable {
             "b": 1,
             "c": "123",
         ].jsonData() ?? Data()
+    }
+}
+
+extension EncodableObject: NetworkEncodable {
+    var contentType: String? {
+        nil
+    }
+
+    func encode() async throws(NetworkEncodableError) -> Data {
+        ["a": self.a, "b": self.b, "c": self.c].jsonData() ?? Data()
     }
 }

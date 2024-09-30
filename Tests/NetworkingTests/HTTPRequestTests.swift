@@ -40,10 +40,10 @@ struct HTTPRequestTests {
     static let encodableBodyExpectation: [([String: String], (any NetworkEncodable)?)] = [
         ([:], nil),
         ([:], nil),
-        (["Content-Type": "application/json"], EncodableObject(a: true, b: 1, c: "abc")),
-        (["Content-Type": "application/json"], EncodableObject(a: true, b: 1, c: "abc")),
+        ([:], EncodableObject(a: true, b: 1, c: "abc")),
+        ([:], EncodableObject(a: true, b: 1, c: "abc")),
         ([:], nil),
-        (["Content-Type": "application/json"], EncodableObject(a: true, b: 1, c: "abc"))
+        ([:], EncodableObject(a: true, b: 1, c: "abc"))
     ]
 
     // MARK: Tests
