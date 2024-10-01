@@ -13,6 +13,8 @@ import Testing
 @Suite
 struct ArrayURLQueryItemTests {
 
+    // MARK: Setup
+
     static let httpQueryItem = HTTPQueryItem(name: "abc", value: "123")
 
     static let arguments1: [[URLQueryItem]] = [
@@ -30,6 +32,8 @@ struct ArrayURLQueryItemTests {
         [.init(name: "abc", value: "123"), .init(name: "abcd", value: "1234")],
         [.init(name: "abc", value: "123"), .init(name: "abc", value: "123")]
     ]
+
+    // MARK: Tests
 
     @Test("append(:policy: .append)", arguments: arguments1, arguments2)
     func appendQueryWithPolicyAppend(urlQueryItems: [URLQueryItem], queryItems: [HTTPQueryItem]) async throws {

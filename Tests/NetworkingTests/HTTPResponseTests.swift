@@ -13,6 +13,8 @@ import Testing
 @Suite
 struct HTTPResponseTests {
 
+    // MARK: Tests
+
     @Test("init(result: .success)")
     func initEmptySuccess() async throws {
 

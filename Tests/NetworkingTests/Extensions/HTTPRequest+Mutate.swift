@@ -30,7 +30,7 @@ extension HTTPRequest {
         }
     }
 
-    func setting(headers: [HTTPHeader]) -> Self {
+    func setting(headers: [String: String]) -> Self {
 
         switch self.method {
 

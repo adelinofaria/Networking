@@ -10,7 +10,7 @@ import Foundation
 import Testing
 
 protocol MockURLProtocolDelegate {
-    func processRequest(with task: URLSessionTask) async throws -> (HTTPURLResponse, Data)
+    func processRequest(with task: URLSessionTask) async throws -> (URLResponse, Data)
 }
 
 final class MockURLProtocol: URLProtocol {
@@ -67,29 +67,36 @@ final actor URLSessionMock: MockURLProtocolDelegate {
 
         let url: URL
         let data: Data
+        let httpResponse: Bool
     }
 
     var registeredEntries: [MockEntry] = []
 
-    func registerMock(url: URL, data: Data) {
+    func registerMock(url: URL, data: Data, httpResponse: Bool = true) {
 
-        self.registeredEntries.append(.init(url: url, data: data))
+        self.registeredEntries.append(.init(url: url, data: data, httpResponse: httpResponse))
     }
 
     // MARK: MockURLProtocolDelegate
 
-    func processRequest(with task: URLSessionTask) async throws -> (HTTPURLResponse, Data) {
+    func processRequest(with task: URLSessionTask) async throws -> (URLResponse, Data) {
 
         guard let url = task.currentRequest?.url,
               let entry = self.registeredEntries.first(where: { $0.url == url }) else {
             throw URLSessionMockError.mockNotFound
         }
 
-        let response = HTTPURLResponse(url: url, mimeType: nil, expectedContentLength: entry.data.count, textEncodingName: nil)
+        let response: URLResponse
+
+        if entry.httpResponse {
+
+            response = HTTPURLResponse(url: url, mimeType: nil, expectedContentLength: entry.data.count, textEncodingName: nil)
+
+        } else {
+
+            response = URLResponse(url: url, mimeType: nil, expectedContentLength: entry.data.count, textEncodingName: nil)
+        }
 
         return (response, entry.data)
     }
-}
-
-extension URLSessionMock {
 }

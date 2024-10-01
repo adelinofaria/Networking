@@ -22,13 +22,6 @@ extension URLRequest {
         }
     }
 
-    mutating func setHeaders(headers: [HTTPHeader]) {
-
-        headers.forEach {
-            self.setValue($0.value, forHTTPHeaderField: $0.name)
-        }
-    }
-
     mutating func setBody(object: any NetworkEncodable) async throws(NetworkEncodableError) {
 
         self.httpBody = try await object.encode()

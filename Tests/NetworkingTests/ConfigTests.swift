@@ -13,6 +13,8 @@ import Testing
 @Suite
 struct ConfigTests {
 
+    // MARK: Tests
+
     @Test("init()")
     func initEmpty() async throws {
 

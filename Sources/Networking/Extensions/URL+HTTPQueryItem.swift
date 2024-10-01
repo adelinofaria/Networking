@@ -16,7 +16,11 @@ extension URL {
             throw .failedToCreateURLComponents
         }
 
-        urlComponents.queryItems?.append(query, policy: mergePolicy)
+        var queryItems = urlComponents.queryItems ?? []
+
+        queryItems.append(query, policy: mergePolicy)
+
+        urlComponents.queryItems = queryItems
 
         if let url = urlComponents.url {
             self = url

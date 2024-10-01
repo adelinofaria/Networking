@@ -10,10 +10,6 @@ import Foundation
 import Testing
 @testable import Networking
 
-extension URL {
-    static var sample = URL(string: "https://host.domain/path?q=abc")!
-}
-
 @Suite
 struct HTTPRequestTests {
 
@@ -91,7 +87,7 @@ struct HTTPRequestTests {
     @Test("All methods with headers", arguments: Self.allMethods)
     func urlRequestWithHeaders(httpRequest: HTTPRequest) async throws {
 
-        let headers: [HTTPHeader] = [.init(name: "b", value: "2")]
+        let headers = ["b": "2"]
 
         let payloadHTTPRequest = httpRequest.setting(headers: headers)
 

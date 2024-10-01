@@ -19,6 +19,7 @@ internal extension Networking {
             return object
 
         } else {
+
             throw .unexpectedStatusCode(data: data, response: httpURLResponse)
         }
     }

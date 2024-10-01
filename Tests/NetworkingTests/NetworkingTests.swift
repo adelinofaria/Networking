@@ -141,21 +141,3 @@ struct NetworkingTests {
         #expect(await task.value == true)
     }
 }
-
-
-/*
- Testing checklist
- [ ] Networking public interfaces
- [ ] Networking authentication logic
- [ ] Netowkring decoding logic
- [ ] Netowkring request logic (success, failure, throwing, cancelation
- [ ] Config
- [ ] Extensions Array+URLQueryItem
- [ ] Extensions URL+HTTPQueryItem
- [ ] Extensions URLRequest+Mutating
- [ ] HTTPHeader
- [ ] HTTPQueryItem
- [ ] HTTPRequest
- [ ] HTTPResponse
- [ ] all throwables should be testable
- */

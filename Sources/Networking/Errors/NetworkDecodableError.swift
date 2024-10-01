@@ -11,5 +11,6 @@ import Foundation
 public enum NetworkDecodableError: Error {
     case unknown
     case generic(error: Error)
+    case invalidData(data: Data, error: Error?)
     case unexpectedStatusCode(data: Data, response: HTTPURLResponse)
 }

@@ -13,14 +13,14 @@ public struct HTTPRequest {
     public let url: URL
     public let method: HTTPMethod
     public let query: [HTTPQueryItem]?
-    public let headers: [HTTPHeader]?
+    public let headers: [String: String]?
     public let body: (any NetworkEncodable)?
 
     public var timeout: TimeInterval?
 
     public static func get(url: URL,
                            query: [HTTPQueryItem]? = nil,
-                           headers: [HTTPHeader]? = nil,
+                           headers: [String: String]? = nil,
                            timeout: TimeInterval? = nil) -> Self {
 
         .init(url: url, method: .get, query: query, headers: headers, timeout: timeout)
@@ -28,7 +28,7 @@ public struct HTTPRequest {
 
     public static func head(url: URL,
                             query: [HTTPQueryItem]? = nil,
-                            headers: [HTTPHeader]? = nil,
+                            headers: [String: String]? = nil,
                             timeout: TimeInterval? = nil) -> Self {
 
         .init(url: url, method: .head, query: query, headers: headers, timeout: timeout)
@@ -36,7 +36,7 @@ public struct HTTPRequest {
 
     public static func post(url: URL,
                             query: [HTTPQueryItem]? = nil,
-                            headers: [HTTPHeader]? = nil,
+                            headers: [String: String]? = nil,
                             body: (any NetworkEncodable)? = nil,
                             timeout: TimeInterval? = nil) -> Self {
 
@@ -45,7 +45,7 @@ public struct HTTPRequest {
 
     public static func put(url: URL,
                            query: [HTTPQueryItem]? = nil,
-                           headers: [HTTPHeader]? = nil,
+                           headers: [String: String]? = nil,
                            body: (any NetworkEncodable)? = nil,
                            timeout: TimeInterval? = nil) -> Self {
 
@@ -54,7 +54,7 @@ public struct HTTPRequest {
 
     public static func delete(url: URL,
                               query: [HTTPQueryItem]? = nil,
-                              headers: [HTTPHeader]? = nil,
+                              headers: [String: String]? = nil,
                               timeout: TimeInterval? = nil) -> Self {
 
         .init(url: url, method: .delete, query: query, headers: headers, timeout: timeout)
@@ -62,7 +62,7 @@ public struct HTTPRequest {
 
     public static func patch(url: URL,
                              query: [HTTPQueryItem]? = nil,
-                             headers: [HTTPHeader]? = nil,
+                             headers: [String: String]? = nil,
                              body: (any NetworkEncodable)? = nil,
                              timeout: TimeInterval? = nil) -> Self {
 
@@ -72,7 +72,7 @@ public struct HTTPRequest {
     private init(url: URL,
                  method: HTTPMethod,
                  query: [HTTPQueryItem]? = nil,
-                 headers: [HTTPHeader]? = nil,
+                 headers: [String: String]? = nil,
                  body: (any NetworkEncodable)? = nil,
                  timeout: TimeInterval? = nil) {
         self.url = url
