@@ -1,4 +1,8 @@
 <p align="center">
+  <img src="https://raw.githubusercontent.com/adelinofaria/networking/main/assets/networking.svg" alt="Networking"/>
+</p>
+
+<p align="center">
  <a href="https://github.com/adelinofaria/networking/actions/workflows/tests.yml">
    <img src="https://github.com/adelinofaria/networking/actions/workflows/tests.yml/badge.svg?branch=main" alt="GitHub Action Status">
  </a>
