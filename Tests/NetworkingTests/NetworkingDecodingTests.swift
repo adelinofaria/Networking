@@ -161,15 +161,3 @@ struct NetworkingDecodingTests {
         }
     }
 }
-
-struct ThrowDecodableObject: NetworkDecodable {
-    static func decode(data: Data) async throws(NetworkDecodableError) -> Self {
-        throw .unknown
-    }
-}
-
-struct ThrowDecodableErrorObject: Error, NetworkDecodable {
-    static func decode(data: Data) async throws(NetworkDecodableError) -> Self {
-        throw .unknown
-    }
-}

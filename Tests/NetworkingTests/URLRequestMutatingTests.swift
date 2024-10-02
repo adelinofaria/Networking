@@ -70,7 +70,7 @@ struct URLRequestMutatingTests {
 
         let data = try await encodable.encode()
 
-        #expect(urlRequest.allHTTPHeaderFields?[HTTPConstants.contentTypeHeaderKey] == encodable.contentType)
+        #expect(urlRequest.allHTTPHeaderFields?[HTTPConstants.contentTypeHeaderKey] == "application/test")
         #expect(urlRequest.httpBody?.count == data.count)
     }
 }

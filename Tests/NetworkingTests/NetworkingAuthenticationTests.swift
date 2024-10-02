@@ -28,7 +28,7 @@ struct NetworkingAuthenticationTests {
     @Test
     func authenticationLogicThrow() async throws {
 
-        let networking = Networking(authentication: AuthenticatorThrowTest())
+        let networking = Networking(authentication: NetworkAuthenticationThrow())
 
         do {
             let _ = try await networking.authenticationLogic(urlRequest: .init(url: .sample))
@@ -51,11 +51,5 @@ struct AuthenticatorTest: NetworkAuthentication {
         urlRequest.allHTTPHeaderFields = allHTTPHeaderFields
 
         return urlRequest
-    }
-}
-
-struct AuthenticatorThrowTest: NetworkAuthentication {
-    func authenticate(urlRequest: URLRequest) async throws(NetworkAuthenticationError) -> URLRequest {
-        throw .unknown
     }
 }

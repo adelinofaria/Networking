@@ -40,10 +40,11 @@ _Unopinated networking framework with readability, easy of use, adaptability and
 - [x] Full error handling through throw
 - [x] Support for iOS and macOS
 - [ ] Configurable timeout, successResponseRange, Accept/Content-Type headers
+- [ ] Content-Type media type logic [mdn](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type#media-type)
 - [ ] Caching support
 - [ ] Response validation of Content-Type and statusCode
 - [ ] Upload/Download tasks & multipart upload
-- [+] Extensive documentation
+- [x] Extensive documentation
 - [ ] Subpackages for common integrations (JSONSerialization, Basic Authentication, OAuth)
 - [ ] Add sophisticated and extensive examples into Sources/Examples
 - [ ] Support for Linux

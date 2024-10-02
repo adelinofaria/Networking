@@ -66,6 +66,7 @@ final actor URLSessionMock: MockURLProtocolDelegate {
     struct MockEntry {
 
         let url: URL
+        let statusCode: Int
         let data: Data
         let httpResponse: Bool
     }
@@ -80,9 +81,9 @@ final actor URLSessionMock: MockURLProtocolDelegate {
 
     var registeredEntries: [MockEntry] = []
 
-    func registerMock(url: URL, data: Data, httpResponse: Bool = true) {
+    func registerMock(url: URL, statusCode: Int, data: Data, httpResponse: Bool = true) {
 
-        self.registeredEntries.append(.init(url: url, data: data, httpResponse: httpResponse))
+        self.registeredEntries.append(.init(url: url, statusCode: statusCode, data: data, httpResponse: httpResponse))
     }
 
     // MARK: MockURLProtocolDelegate
@@ -98,11 +99,24 @@ final actor URLSessionMock: MockURLProtocolDelegate {
 
         if entry.httpResponse {
 
-            response = HTTPURLResponse(url: url, mimeType: nil, expectedContentLength: entry.data.count, textEncodingName: nil)
+            if let httpURLResponse = HTTPURLResponse(url: url,
+                                                     statusCode: entry.statusCode,
+                                                     httpVersion: nil,
+                                                     headerFields: nil) {
+                response = httpURLResponse
+            } else {
+                response = HTTPURLResponse(url: url,
+                                           mimeType: nil,
+                                           expectedContentLength: entry.data.count,
+                                           textEncodingName: nil)
+            }
 
         } else {
 
-            response = URLResponse(url: url, mimeType: nil, expectedContentLength: entry.data.count, textEncodingName: nil)
+            response = URLResponse(url: url,
+                                   mimeType: nil,
+                                   expectedContentLength: entry.data.count,
+                                   textEncodingName: nil)
         }
 
         return (response, entry.data)

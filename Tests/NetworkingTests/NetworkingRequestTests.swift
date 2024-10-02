@@ -33,7 +33,7 @@ struct NetworkingRequestTests {
 
         let stringData = try #require("abc".data(using: .utf8))
 
-        await URLSessionMock.shared.registerMock(url: .sample, data: stringData)
+        await URLSessionMock.shared.registerMock(url: .sample, statusCode: 200, data: stringData)
 
         let (data, response) = try await self.networking.requestLogic(urlRequest: .init(url: .sample))
 
@@ -46,7 +46,7 @@ struct NetworkingRequestTests {
 
         let stringData = try #require("abc".data(using: .utf8))
 
-        await URLSessionMock.shared.registerMock(url: .sample, data: stringData)
+        await URLSessionMock.shared.registerMock(url: .sample, statusCode: 200, data: stringData)
 
         let task = Task {
             do {
@@ -91,7 +91,7 @@ struct NetworkingRequestTests {
         let url = try #require(try URL.random())
         let stringData = try #require("abc".data(using: .utf8))
 
-        await URLSessionMock.shared.registerMock(url: url, data: stringData, httpResponse: false)
+        await URLSessionMock.shared.registerMock(url: url, statusCode: 200, data: stringData, httpResponse: false)
 
         do {
             let _ = try await self.networking.requestLogic(urlRequest: .init(url: url))

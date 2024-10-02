@@ -31,7 +31,7 @@ struct EncodableObject {
 
 extension EncodableObject: NetworkEncodable {
     var contentType: String? {
-        nil
+        "application/test"
     }
 
     func encode() async throws(NetworkEncodableError) -> Data {

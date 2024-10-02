@@ -36,10 +36,10 @@ struct HTTPRequestTests {
     static let encodableBodyExpectation: [([String: String], (any NetworkEncodable)?)] = [
         ([:], nil),
         ([:], nil),
-        ([:], EncodableObject(a: true, b: 1, c: "abc")),
-        ([:], EncodableObject(a: true, b: 1, c: "abc")),
+        (["Content-Type": "application/test"], EncodableObject(a: true, b: 1, c: "abc")),
+        (["Content-Type": "application/test"], EncodableObject(a: true, b: 1, c: "abc")),
         ([:], nil),
-        ([:], EncodableObject(a: true, b: 1, c: "abc"))
+        (["Content-Type": "application/test"], EncodableObject(a: true, b: 1, c: "abc"))
     ]
 
     // MARK: Tests
@@ -125,6 +125,24 @@ struct HTTPRequestTests {
         #expect(urlRequest.url == .sample)
         #expect(urlRequest.allHTTPHeaderFields == expectedHeaders)
         #expect(urlRequest.httpBody?.count == expectedByteCount)
+    }
+
+    @Test("urlRequest(with:) throws")
+    func urlRequestThrows() async throws {
+
+        let httpRequest = HTTPRequest.post(url: .sample)
+        let body = ThrowEncodableObject()
+        let payloadHTTPRequest = httpRequest.setting(body: body)
+
+        do {
+            let _ = try await payloadHTTPRequest.urlRequest(with: .init())
+
+            Issue.record("Expected thrown error")
+        } catch .encodable(error: let encodableError) {
+            #expect(encodableError != nil)
+        } catch {
+            Issue.record("Wrong expected thrown error")
+        }
     }
 }
 
