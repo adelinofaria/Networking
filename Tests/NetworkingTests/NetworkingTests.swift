@@ -15,15 +15,11 @@ struct NetworkingTests {
 
     // MARK: Setup
 
-    static let urlSessionMock: URLSessionMock = .init()
-
     var networking: Networking {
 
         let urlSessionConfiguration = URLSessionConfiguration.ephemeral
 
         urlSessionConfiguration.protocolClasses = [MockURLProtocol.self]
-
-        MockURLProtocol.delegate = Self.urlSessionMock
 
         let networking = Networking(urlSession: URLSession(configuration: urlSessionConfiguration))
 
@@ -37,7 +33,7 @@ struct NetworkingTests {
 
         let url = try #require(URL(string: "https://domain.toplevel/path1?query=item"))
 
-        await Self.urlSessionMock.registerMock(url: url, data: Data())
+        await URLSessionMock.shared.registerMock(url: url, data: Data())
 
         let result: (Data, URLResponse) = try await self.networking.request(.get(url: url))
 
@@ -49,7 +45,7 @@ struct NetworkingTests {
 
         let url = try #require(URL(string: "https://domain.toplevel/path2?query=item"))
 
-        await Self.urlSessionMock.registerMock(url: url, data: Data())
+        await URLSessionMock.shared.registerMock(url: url, data: Data())
 
         let _: None = try await self.networking.request(.get(url: url))
     }
@@ -59,7 +55,7 @@ struct NetworkingTests {
 
         let url = try #require(URL(string: "https://domain.toplevel/path3?query=item"))
 
-        await Self.urlSessionMock.registerMock(url: url, data: DecodableObject.sampleData)
+        await URLSessionMock.shared.registerMock(url: url, data: DecodableObject.sampleData)
 
         let result: DecodableObject = try await self.networking.request(.get(url: url))
 
@@ -73,7 +69,7 @@ struct NetworkingTests {
 
         let url = try #require(URL(string: "https://domain.toplevel/path4?query=item"))
 
-        await Self.urlSessionMock.registerMock(url: url, data: Data())
+        await URLSessionMock.shared.registerMock(url: url, data: Data())
 
         let _: Result<None, NoneError> = try await self.networking.request(.get(url: url))
     }
@@ -83,7 +79,7 @@ struct NetworkingTests {
 
         let url = try #require(URL(string: "https://domain.toplevel/path5?query=item"))
 
-        await Self.urlSessionMock.registerMock(url: url, data: DecodableObject.sampleData)
+        await URLSessionMock.shared.registerMock(url: url, data: DecodableObject.sampleData)
 
         let result: Result<DecodableObject, NoneError> = try await self.networking.request(.get(url: url))
 
@@ -102,7 +98,7 @@ struct NetworkingTests {
 
         let url = try #require(URL(string: "https://domain.toplevel/path3?query=item"))
 
-        await Self.urlSessionMock.registerMock(url: url, data: DecodableObject.sampleData)
+        await URLSessionMock.shared.registerMock(url: url, data: DecodableObject.sampleData)
 
         let httpResponse: HTTPResponse<DecodableObject, NoneError> = try await self.networking.request(.get(url: url))
 

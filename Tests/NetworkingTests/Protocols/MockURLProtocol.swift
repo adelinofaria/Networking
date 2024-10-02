@@ -70,6 +70,14 @@ final actor URLSessionMock: MockURLProtocolDelegate {
         let httpResponse: Bool
     }
 
+    static let shared: URLSessionMock = {
+        let mock = URLSessionMock()
+
+        MockURLProtocol.delegate = mock
+
+        return mock
+    }()
+
     var registeredEntries: [MockEntry] = []
 
     func registerMock(url: URL, data: Data, httpResponse: Bool = true) {

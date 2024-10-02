@@ -15,15 +15,11 @@ struct NetworkingRequestTests {
 
     // MARK: Setup
 
-    static let urlSessionMock: URLSessionMock = .init()
-
     var networking: Networking {
 
         let urlSessionConfiguration = URLSessionConfiguration.ephemeral
 
         urlSessionConfiguration.protocolClasses = [MockURLProtocol.self]
-
-        MockURLProtocol.delegate = Self.urlSessionMock
 
         let networking = Networking(urlSession: URLSession(configuration: urlSessionConfiguration))
 
@@ -37,7 +33,7 @@ struct NetworkingRequestTests {
 
         let stringData = try #require("abc".data(using: .utf8))
 
-        await Self.urlSessionMock.registerMock(url: .sample, data: stringData)
+        await URLSessionMock.shared.registerMock(url: .sample, data: stringData)
 
         let (data, response) = try await self.networking.requestLogic(urlRequest: .init(url: .sample))
 
@@ -50,7 +46,7 @@ struct NetworkingRequestTests {
 
         let stringData = try #require("abc".data(using: .utf8))
 
-        await Self.urlSessionMock.registerMock(url: .sample, data: stringData)
+        await URLSessionMock.shared.registerMock(url: .sample, data: stringData)
 
         let task = Task {
             do {
@@ -95,7 +91,7 @@ struct NetworkingRequestTests {
         let url = try #require(try URL.random())
         let stringData = try #require("abc".data(using: .utf8))
 
-        await Self.urlSessionMock.registerMock(url: url, data: stringData, httpResponse: false)
+        await URLSessionMock.shared.registerMock(url: url, data: stringData, httpResponse: false)
 
         do {
             let _ = try await self.networking.requestLogic(urlRequest: .init(url: url))
