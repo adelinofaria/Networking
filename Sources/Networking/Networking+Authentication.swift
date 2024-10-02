@@ -10,6 +10,10 @@ import Foundation
 
 internal extension Networking {
 
+    /// Authentication related logic function.
+    /// - Parameter request: Raw `URLRequest` to be authenticated just before networking.
+    /// - Returns: Processed `URLRequest` ready for networking.
+    /// - Throws: `NetworkAuthenticationError`
     func authenticationLogic(urlRequest: URLRequest) async throws(NetworkAuthenticationError) -> URLRequest {
 
         let authenticated = try await self.authentication?.authenticate(urlRequest: urlRequest)

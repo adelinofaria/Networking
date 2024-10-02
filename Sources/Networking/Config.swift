@@ -8,13 +8,23 @@
 
 import Foundation
 
+/// `Config` holds default values, shared values and configured policies for internal use.
 public struct Config {
 
     /// Although duplication of query items isn't a prefered practice, some APIs do use to some extent. To allow such behaviour set his property to `.append`.
     public let queryItemMergePolicy: MergePolicy
-    public let sharedHeaders: [String: String]
-    public let timeout: TimeInterval
 
+    /// HTTP Headers to be injected in all requests.
+    public let sharedHeaders: [String: String]
+
+    /// Default value for `URLRequest` timeout mechanic.
+    public let timeout: TimeInterval
+    
+    /// Default initializer
+    /// - Parameters:
+    ///   - queryItemMergePolicy: `MergePolicy` to be configured, defaults to `.overwrite`.
+    ///   - sharedHeaders: HTTP Headers to be injected in all requests.
+    ///   - timeout: Default value for `URLRequest` timeout mechanic.
     public init(queryItemMergePolicy: MergePolicy = .overwrite,
                 sharedHeaders: [String: String] = [:],
                 timeout: TimeInterval = Constants.timeoutDefault) {

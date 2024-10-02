@@ -39,7 +39,7 @@ _Unopinated networking framework with readability, easy of use, adaptability and
 - [ ] Caching support
 - [ ] Response validation of Content-Type and statusCode
 - [ ] Upload/Download tasks & multipart upload
-- [ ] Extensive documentation
+- [+] Extensive documentation
 - [ ] Subpackages for common integrations (JSONSerialization, Basic Authentication, OAuth)
 - [ ] Add sophisticated and extensive examples into Sources/Examples
 - [ ] Support for Linux

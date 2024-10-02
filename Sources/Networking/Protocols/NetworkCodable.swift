@@ -8,4 +8,5 @@
 
 import Foundation
 
+/// `NetworkCodable` is a type alias for the `NetworkDecodable` and `NetworkEncodable` protocols.
 typealias NetworkCodable = NetworkDecodable & NetworkEncodable

@@ -10,6 +10,10 @@ import Foundation
 
 internal extension Networking {
 
+    /// Core networking logic function.
+    /// - Parameter request: Raw `URLRequest`ready to be sent over network.
+    /// - Returns: Pair `Data` and `HTTURLResponse` received from Foundation's `data(for:)`, ready for further response processing.
+    /// - Throws: `NetworkingError`
     func requestLogic(urlRequest: URLRequest) async throws(NetworkingError) -> (Data, HTTPURLResponse) {
 
         let (data, response): (Data, URLResponse)

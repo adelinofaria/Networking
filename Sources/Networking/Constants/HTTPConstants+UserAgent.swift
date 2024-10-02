@@ -18,6 +18,19 @@ import Foundation
 
 extension HTTPConstants {
 
+    /// Compiles an `User-Agent` based on current Hardware Device, Operating System and Screen Scale - following specification at [RFC 9110].
+    ///
+    /// Examples
+    /// ==============================
+    ///
+    ///     App/1.0.0 (Macintosh; MacOS/14.6.1; Scale/1.00)
+    ///     App/1.0.0 (iPhone; iOS/18.0.0; Scale/3.00)
+    ///     App/1.0.0 (iPad; iPadOS/18.0.0; Scale/2.00)
+    ///     App/1.0.0 (Apple Watch; watchOS/11.0.0; Scale/2.00)
+    ///
+    /// - Returns: String ready to be used as a value for the HTTP Header `User-Agent`.
+    ///
+    /// [RFC 9110]: https://www.rfc-editor.org/rfc/rfc9110.html#name-user-agent
     @MainActor
     static func userAgentLogic() -> String {
 
@@ -65,6 +78,16 @@ extension HTTPConstants {
         return userAgent
     }
 
+
+    /// Build `User-Agent` based on injected parameters.
+    /// - Parameters:
+    ///   - executableName: The running executable's name. Should be queried from `ProcessInfo`.
+    ///   - executableVersion: The running executable's version. Should be queried from Info.plist.
+    ///   - deviceModel: Broad classification of the hardware device. (e.g. iPhone, iPad, Macintosh)
+    ///   - osName: The Operating System's name. (e.g. iOS, macOS)
+    ///   - osVersion: The Operating System's version.
+    ///   - screenScale: Main screen's scale factor.
+    /// - Returns: String ready to be used as a value for the HTTP Header `User-Agent`.
     @MainActor
     static func userAgent(executableName: String,
                           executableVersion: String?,
@@ -112,12 +135,5 @@ extension HTTPConstants {
         }
 
         return userAgentString
-    }
-}
-
-extension OperatingSystemVersion {
-
-    var versionString: String {
-        "\(self.majorVersion).\(self.minorVersion).\(self.patchVersion)"
     }
 }

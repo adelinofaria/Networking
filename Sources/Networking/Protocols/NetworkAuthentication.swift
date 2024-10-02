@@ -8,6 +8,13 @@
 
 import Foundation
 
+/// `Networking` authentication decoupling protocol.
 public protocol NetworkAuthentication {
+
+    /// Receiver must modify provided `URLRequest` to successfuly satisfy the authentication requirements.
+    /// - Parameters:
+    ///   - urlRequest: `URLRequest` imediately  before being sent over network.
+    /// - Returns: Modified `URLRequest` to the authentication specifications.
+    /// - Throws: `NetworkAuthenticationError`
     func authenticate(urlRequest: URLRequest) async throws(NetworkAuthenticationError) -> URLRequest
 }

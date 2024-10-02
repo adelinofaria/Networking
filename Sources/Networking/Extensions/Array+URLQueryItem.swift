@@ -10,6 +10,10 @@ import Foundation
 
 extension Array where Element == URLQueryItem {
 
+    /// Append new items by converting `HTTPQueryItem` into `URLQueryItem` with a set merge strategy of `MergePolicy`.
+    /// - Parameters:
+    ///   - query: New items to be converted into `URLQueryItem` and appended.
+    ///   - policy: Strategy to be used for the merge of items.
     mutating func append(_ query: [HTTPQueryItem], policy: MergePolicy) {
 
         let queryItems = query.map {

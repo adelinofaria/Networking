@@ -8,12 +8,23 @@
 
 import Foundation
 
+/// Entrypoint type of `Networking` package.
 public final actor Networking {
-
+    
+    /// Decoupled authentication logic object.
     public let authentication: NetworkAuthentication?
-    public let config: Config
-    public let session: URLSession
 
+    /// Config holds default values, shared values and other configurations.
+    public let config: Config
+
+    /// Injected `URLSession`, defaults to `.shared`.
+    public let session: URLSession
+    
+    /// Default initializer.
+    /// - Parameters:
+    ///   - authentication: Object conforming to `NetworkAuthentication`.
+    ///   - config: `Config`, defaults to it's empty constructor.
+    ///   - urlSession: Injected `URLSession`, defaults to `.shared`.
     public init(authentication: NetworkAuthentication? = nil,
                 config: Config = .init(),
                 urlSession: URLSession = .shared) {
@@ -25,9 +36,10 @@ public final actor Networking {
 
     // MARK: Plumbing
 
-    /// Plumbing interface, use this to retrieve exactly what foundation returns
-    /// - Parameter request: HTTPRequest
-    /// - Returns: `Data` and `HTTPURLResponse` straight from `URLSession`'s `data(for:)`
+    /// Plumbing interface, use this to retrieve exactly what foundation returns.
+    /// - Parameter request: `HTTPRequest`
+    /// - Returns: `Data` and `HTTPURLResponse` straight from `URLSession`'s `data(for:)`.
+    /// - Throws: `NetworkingError`
     public func request(_ request: HTTPRequest) async throws(NetworkingError) -> (Data, HTTPURLResponse) {
 
         let urlRequest = try await request.urlRequest(with: self.config)
@@ -46,6 +58,10 @@ public final actor Networking {
 
     // MARK: Return objects straight
 
+    /// `request(:)` variant that returns expected `T` object directly.
+    /// - Parameter request: `HTTPRequest` object.
+    /// - Returns: Expected `T` model found in HTTP body. Conforms to `NetworkDecodable`.
+    /// - Throws: `NetworkingError`
     public func request<T: NetworkDecodable>(_ request: HTTPRequest) async throws(NetworkingError) -> T {
 
         let (data, httpURLResponse) = try await self.request(request)
@@ -57,6 +73,10 @@ public final actor Networking {
         }
     }
 
+    /// `request(:)` variant that returns `Result<T, E>`. `T` stands for the success model, `E` the error - both are parsed from HTTP body.
+    /// - Parameter request: `HTTPRequest` object.
+    /// - Returns: `Result<T, E>`, `T` stands for the success model, `E` for the error. Both are parsed from HTTP body and conforms to `NetworkDecodable`.
+    /// - Throws: `NetworkingError`
     public func request<T: NetworkDecodable, E: NetworkDecodable>(_ request: HTTPRequest) async throws(NetworkingError) -> Result<T, E> {
 
         let (data, httpURLResponse) = try await self.request(request)
@@ -70,6 +90,11 @@ public final actor Networking {
 
     // MARK: Return objects in HTTPResponse Wrapper object
 
+    /// `request(:)` variant that returns `HTTPResponse<T, E>`. `T` stands for the success model, `E` the error - both are parsed from HTTP body.
+    /// `HTTPResponse` wraps the `Result<T, E>` plus all scrapped info from a sucessful `HTTPURLResponse`.
+    /// - Parameter request: `HTTPRequest` object.
+    /// - Returns: `HTTPResponse<T, E>`, `T` stands for the success model, `E` for the error. Both are parsed from HTTP body and conforms to `NetworkDecodable`.
+    /// - Throws: `NetworkingError`
     public func request<T: NetworkDecodable, E: NetworkDecodable>(_ request: HTTPRequest) async throws(NetworkingError) -> HTTPResponse<T, E> {
 
         let (data, httpURLResponse) = try await self.request(request)

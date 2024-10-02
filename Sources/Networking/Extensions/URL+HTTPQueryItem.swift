@@ -10,6 +10,10 @@ import Foundation
 
 extension URL {
 
+    /// Append new `HTTPQueryItem` to `URL` using `URLComponents.queryItems` interface and `MergePolicy` strategy.
+    /// - Parameters:
+    ///   - query: List of `HTTPQueryItem` to be appended.
+    ///   - mergePolicy: Merge strategy to be used to solve colisions.
     mutating func setQuery(with query: [HTTPQueryItem], mergePolicy: MergePolicy) throws(NetworkingURLRequestError) {
 
         guard var urlComponents = URLComponents(url: self, resolvingAgainstBaseURL: false) else {
@@ -25,7 +29,7 @@ extension URL {
         if let url = urlComponents.url {
             self = url
         } else {
-            throw .failedToCreateNewURL
+            throw .failedToCreateURLFromURLComponents
         }
     }
 }
