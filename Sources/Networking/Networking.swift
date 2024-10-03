@@ -40,7 +40,7 @@ public final actor Networking {
     /// - Parameter request: `HTTPRequest`
     /// - Returns: `Data` and `HTTPURLResponse` straight from `URLSession`'s `data(for:)`.
     /// - Throws: `NetworkingError`
-    public func request(_ request: HTTPRequest) async throws(NetworkingError) -> (Data, HTTPURLResponse) {
+    public func request<T, E>(_ request: HTTPRequest<T, E>) async throws(NetworkingError) -> (Data, HTTPURLResponse) {
 
         let urlRequest = try await request.urlRequest(with: self.config)
         let authed: URLRequest
@@ -62,7 +62,7 @@ public final actor Networking {
     /// - Parameter request: `HTTPRequest` object.
     /// - Returns: Expected `T` model found in HTTP body. Conforms to `NetworkDecodable`.
     /// - Throws: `NetworkingError`
-    public func request<T: NetworkDecodable>(_ request: HTTPRequest) async throws(NetworkingError) -> T {
+    public func request<T>(_ request: HTTPRequest<T, NoneError>) async throws(NetworkingError) -> T {
 
         let (data, httpURLResponse) = try await self.request(request)
 
@@ -77,7 +77,7 @@ public final actor Networking {
     /// - Parameter request: `HTTPRequest` object.
     /// - Returns: `Result<T, E>`, `T` stands for the success model, `E` for the error. Both are parsed from HTTP body and conforms to `NetworkDecodable`.
     /// - Throws: `NetworkingError`
-    public func request<T: NetworkDecodable, E: NetworkDecodable>(_ request: HTTPRequest) async throws(NetworkingError) -> Result<T, E> {
+    public func request<T, E>(_ request: HTTPRequest<T, E>) async throws(NetworkingError) -> Result<T, E> {
 
         let (data, httpURLResponse) = try await self.request(request)
 
@@ -95,7 +95,7 @@ public final actor Networking {
     /// - Parameter request: `HTTPRequest` object.
     /// - Returns: `HTTPResponse<T, E>`, `T` stands for the success model, `E` for the error. Both are parsed from HTTP body and conforms to `NetworkDecodable`.
     /// - Throws: `NetworkingError`
-    public func request<T: NetworkDecodable, E: NetworkDecodable>(_ request: HTTPRequest) async throws(NetworkingError) -> HTTPResponse<T, E> {
+    public func request<T, E>(_ request: HTTPRequest<T, E>) async throws(NetworkingError) -> HTTPResponse<T, E> {
 
         let (data, httpURLResponse) = try await self.request(request)
 

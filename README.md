@@ -50,7 +50,7 @@ _Unopinated networking framework with readability, easy of use, adaptability and
 
 ## Prioritized todo list
 
-- [ ] Tie generic injection into HTTPRequest instead of request methods
+- [x] Tie generic injection into HTTPRequest instead of request methods
 - [x] Support for watchOS
 - [ ] Response validation of Content-Type and statusCode
 - [ ] Configurable timeout, successResponseRange, Accept/Content-Type headers

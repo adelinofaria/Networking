@@ -10,7 +10,7 @@ import Foundation
 
 /// `HTTPRequest` contains all the necessary information to build a `URLRequest` for networking.
 /// All inits should be private and usage should be restricted to the static methods prefixed by a HTTP method.
-public struct HTTPRequest {
+public struct HTTPRequest<T: NetworkDecodable, E: NetworkDecodable> {
 
     /// Base `URL` on which we might add additional query string from `query`.
     public let url: URL

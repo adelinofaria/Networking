@@ -13,51 +13,44 @@ import Testing
 @Suite
 struct NetworkingTests {
 
-    // MARK: Setup
-
-    var networking: Networking {
-
-        let urlSessionConfiguration = URLSessionConfiguration.ephemeral
-
-        urlSessionConfiguration.protocolClasses = [MockURLProtocol.self]
-
-        let networking = Networking(urlSession: URLSession(configuration: urlSessionConfiguration))
-
-        return networking
-    }
-
     // MARK: Tests
 
     @Test
     func requestPlumbing() async throws {
 
         let url = try #require(URL(string: "https://domain.toplevel/path1?query=item"))
+        let networking = Networking.networkingMock
 
         await URLSessionMock.shared.registerMock(url: url, statusCode: 200, data: Data())
 
-        let result: (Data, URLResponse) = try await self.networking.request(.get(url: url))
+        let httpRequest: HTTPRequest<None, NoneError> = .get(url: url)
 
-        #expect(result != nil)
+        let (data, response) = try await networking.request(httpRequest) as (Data, HTTPURLResponse)
+
+        #expect(data != nil)
+        #expect(response != nil)
     }
 
     @Test
     func requestNone() async throws {
 
         let url = try #require(URL(string: "https://domain.toplevel/path2?query=item"))
+        let networking = Networking.networkingMock
 
         await URLSessionMock.shared.registerMock(url: url, statusCode: 200, data: Data())
 
-        let _: None = try await self.networking.request(.get(url: url))
+        let _: None = try await networking.request(.get(url: url))
     }
 
     @Test
     func requestDecodable() async throws {
 
         let url = try #require(URL(string: "https://domain.toplevel/path3?query=item"))
+        let networking = Networking.networkingMock
 
         await URLSessionMock.shared.registerMock(url: url, statusCode: 200, data: DecodableObject.sampleData)
 
-        let result: DecodableObject = try await self.networking.request(.get(url: url))
+        let result: DecodableObject = try await networking.request(.get(url: url))
 
         #expect(result.a == true)
         #expect(result.b == 1)
@@ -68,20 +61,22 @@ struct NetworkingTests {
     func requestResultNone() async throws {
 
         let url = try #require(URL(string: "https://domain.toplevel/path4?query=item"))
+        let networking = Networking.networkingMock
 
         await URLSessionMock.shared.registerMock(url: url, statusCode: 200, data: Data())
 
-        let _: Result<None, NoneError> = try await self.networking.request(.get(url: url))
+        let _: Result<None, NoneError> = try await networking.request(.get(url: url))
     }
 
     @Test
     func requestResultDecodable() async throws {
 
         let url = try #require(URL(string: "https://domain.toplevel/path5?query=item"))
+        let networking = Networking.networkingMock
 
         await URLSessionMock.shared.registerMock(url: url, statusCode: 200, data: DecodableObject.sampleData)
 
-        let result: Result<DecodableObject, NoneError> = try await self.networking.request(.get(url: url))
+        let result: Result<DecodableObject, NoneError> = try await networking.request(.get(url: url))
 
         switch result {
         case .success(let result):
@@ -97,10 +92,11 @@ struct NetworkingTests {
     func requestResultNoneError() async throws {
 
         let url = try #require(URL(string: "https://domain.toplevel/path6?query=item"))
+        let networking = Networking.networkingMock
 
         await URLSessionMock.shared.registerMock(url: url, statusCode: 500, data: DecodableObject.sampleData)
 
-        let result: Result<DecodableObject, NoneError> = try await self.networking.request(.get(url: url))
+        let result: Result<DecodableObject, NoneError> = try await networking.request(.get(url: url))
 
         switch result {
         case .success:
@@ -114,10 +110,11 @@ struct NetworkingTests {
     func requestHTTPResponseDecodable() async throws {
 
         let url = try #require(URL(string: "https://domain.toplevel/path7?query=item"))
+        let networking = Networking.networkingMock
 
         await URLSessionMock.shared.registerMock(url: url, statusCode: 200, data: DecodableObject.sampleData)
 
-        let httpResponse: HTTPResponse<DecodableObject, NoneError> = try await self.networking.request(.get(url: url))
+        let httpResponse: HTTPResponse<DecodableObject, NoneError> = try await networking.request(.get(url: url))
 
         switch httpResponse.result {
         case .success(let result):
@@ -136,11 +133,12 @@ struct NetworkingTests {
     func cancelation() async throws {
 
         let url = try #require(URL(string: "https://domain.toplevel/path8?query=item"))
+        let networking = Networking.networkingMock
 
         let task = Task {
 
             do {
-                let _: None = try await self.networking.request(.get(url: url))
+                let _: None = try await networking.request(.get(url: url))
                 return false
             } catch NetworkingError.canceled {
                 return true
@@ -171,11 +169,12 @@ struct NetworkingTests {
     func requestDecodeThrows() async throws {
 
         let url = try URL.random()
+        let networking = Networking.networkingMock
 
         await URLSessionMock.shared.registerMock(url: url, statusCode: 200, data: Data())
 
         do {
-            let _: ThrowDecodableObject = try await self.networking.request(.get(url: url))
+            let _: ThrowDecodableObject = try await networking.request(.get(url: url))
 
             Issue.record("Expected thrown error")
         } catch NetworkingError.decodable(error: let decodeError) {
@@ -189,11 +188,12 @@ struct NetworkingTests {
     func requestDecodeResultThrows() async throws {
 
         let url = try URL.random()
+        let networking = Networking.networkingMock
 
         await URLSessionMock.shared.registerMock(url: url, statusCode: 200, data: Data())
 
         do {
-            let _: Result<ThrowDecodableObject, NoneError> = try await self.networking.request(.get(url: url))
+            let _: Result<ThrowDecodableObject, NoneError> = try await networking.request(.get(url: url))
 
             Issue.record("Expected thrown error")
         } catch NetworkingError.decodable(error: let decodeError) {

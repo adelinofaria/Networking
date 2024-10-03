@@ -13,29 +13,17 @@ import Testing
 @Suite
 struct NetworkingRequestTests {
 
-    // MARK: Setup
-
-    var networking: Networking {
-
-        let urlSessionConfiguration = URLSessionConfiguration.ephemeral
-
-        urlSessionConfiguration.protocolClasses = [MockURLProtocol.self]
-
-        let networking = Networking(urlSession: URLSession(configuration: urlSessionConfiguration))
-
-        return networking
-    }
-
     // MARK: Tests
 
     @Test("requestLogic(urlRequest:)")
     func requestLogic() async throws {
 
+        let networking = Networking.networkingMock
         let stringData = try #require("abc".data(using: .utf8))
 
         await URLSessionMock.shared.registerMock(url: .sample, statusCode: 200, data: stringData)
 
-        let (data, response) = try await self.networking.requestLogic(urlRequest: .init(url: .sample))
+        let (data, response) = try await networking.requestLogic(urlRequest: .init(url: .sample))
 
         #expect(data == stringData)
         #expect(response.statusCode == 200)
@@ -44,13 +32,14 @@ struct NetworkingRequestTests {
     @Test("requestLogic(urlRequest:).cancel()")
     func requestLogicCancel() async throws {
 
+        let networking = Networking.networkingMock
         let stringData = try #require("abc".data(using: .utf8))
 
         await URLSessionMock.shared.registerMock(url: .sample, statusCode: 200, data: stringData)
 
         let task = Task {
             do {
-                let _ = try await self.networking.requestLogic(urlRequest: .init(url: .sample))
+                let _ = try await networking.requestLogic(urlRequest: .init(url: .sample))
             } catch NetworkingError.canceled {
                 return true
             } catch {
@@ -89,12 +78,13 @@ struct NetworkingRequestTests {
     func requestLogicInvalidHTTPURLResponse() async throws {
 
         let url = try #require(try URL.random())
+        let networking = Networking.networkingMock
         let stringData = try #require("abc".data(using: .utf8))
 
         await URLSessionMock.shared.registerMock(url: url, statusCode: 200, data: stringData, httpResponse: false)
 
         do {
-            let _ = try await self.networking.requestLogic(urlRequest: .init(url: url))
+            let _ = try await networking.requestLogic(urlRequest: .init(url: url))
 
             Issue.record("Expecting a thrown error")
 

@@ -15,7 +15,7 @@ struct HTTPRequestTests {
 
     // MARK: Setup
 
-    static let allMethods: [HTTPRequest] = [
+    static let allMethods: [HTTPRequest<None, NoneError>] = [
         .get(url: .sample),
         .head(url: .sample),
         .post(url: .sample),
@@ -45,7 +45,7 @@ struct HTTPRequestTests {
     // MARK: Tests
 
     @Test("All http methods with no payload", arguments: zip(Self.allMethods, Self.allMethodStrings))
-    func urlRequestNoPayload(httpRequest: HTTPRequest, method: String) async throws {
+    func urlRequestNoPayload(httpRequest: HTTPRequest<None, NoneError>, method: String) async throws {
 
         #expect(httpRequest.method.rawValue == method)
         #expect(httpRequest.url == .sample)
@@ -64,7 +64,7 @@ struct HTTPRequestTests {
     }
 
     @Test("All methods with queryString", arguments: Self.allMethods)
-    func urlRequestWithQuery(httpRequest: HTTPRequest) async throws {
+    func urlRequestWithQuery(httpRequest: HTTPRequest<None, NoneError>) async throws {
 
         let query: [HTTPQueryItem] = [.init(name: "a", value: "1")]
 
@@ -85,7 +85,7 @@ struct HTTPRequestTests {
     }
 
     @Test("All methods with headers", arguments: Self.allMethods)
-    func urlRequestWithHeaders(httpRequest: HTTPRequest) async throws {
+    func urlRequestWithHeaders(httpRequest: HTTPRequest<None, NoneError>) async throws {
 
         let headers = ["b": "2"]
 
@@ -106,7 +106,7 @@ struct HTTPRequestTests {
     }
 
     @Test("All methods with body", arguments: zip(Self.allMethods, Self.encodableBodyExpectation))
-    func urlRequestWithBody(httpRequest: HTTPRequest, expectation: ([String: String], (any NetworkEncodable)?)) async throws {
+    func urlRequestWithBody(httpRequest: HTTPRequest<None, NoneError>, expectation: ([String: String], (any NetworkEncodable)?)) async throws {
 
         let body = EncodableObject(a: true, b: 1, c: "abc")
 
@@ -130,7 +130,7 @@ struct HTTPRequestTests {
     @Test("urlRequest(with:) throws")
     func urlRequestThrows() async throws {
 
-        let httpRequest = HTTPRequest.post(url: .sample)
+        let httpRequest: HTTPRequest<None, NoneError> = .post(url: .sample)
         let body = ThrowEncodableObject()
         let payloadHTTPRequest = httpRequest.setting(body: body)
 
