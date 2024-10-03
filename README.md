@@ -13,13 +13,13 @@
 
 <p align="center">
   <a href="Platforms">
-    <img src="https://img.shields.io/badge/platforms-iOS%20%7C%20macOS-333333.svg" alt="Supported Platforms: iOS, macOS" />
+    <img src="https://img.shields.io/badge/platforms-iOS%20%7C%20macOS%20%7C%20watchOS-333333.svg" alt="Supported Platforms: iOS, macOS" />
   </a>
   <a href="https://github.com/apple/swift">
-    <img src="https://img.shields.io/badge/Swift-6.0-orange.svg" alt="Swift 6.0 supported">
+    <img src="https://img.shields.io/badge/Swift-6.0-F05138.svg" alt="Swift 6.0 supported">
   </a>
   <a href="https://swift.org/package-manager/">
-    <img src="https://img.shields.io/badge/Swift_Package_Manager-compatible-orange?style=flat-square" alt="Swift Package Manager compatible">
+    <img src="https://img.shields.io/badge/Swift_Package_Manager-compatible-F05138?style=flat-square" alt="Swift Package Manager compatible">
   </a>
 </p>
 
@@ -40,7 +40,7 @@ _Unopinated networking framework with readability, easy of use, adaptability and
 - [x] Full error handling through throw
 - [x] Support for iOS and macOS
 - [x] Extensive documentation
-- [ ] Support for watchOS
+- [x] Support for watchOS
 - [ ] Full Caching implementation
 - [ ] Upload/Download tasks & multipart upload
 - [ ] Support for tvOS & visionOS
@@ -51,7 +51,7 @@ _Unopinated networking framework with readability, easy of use, adaptability and
 ## Prioritized todo list
 
 - [ ] Tie generic injection into HTTPRequest instead of request methods
-- [ ] Support for watchOS
+- [x] Support for watchOS
 - [ ] Response validation of Content-Type and statusCode
 - [ ] Configurable timeout, successResponseRange, Accept/Content-Type headers
 - [ ] Caching implementation

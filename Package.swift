@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "Networking",
-    platforms: [.iOS(.v13), .macOS(.v10_15)],
+    platforms: [.iOS(.v13), .macOS(.v10_15), .watchOS(.v6)],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(name: "Networking", targets: ["Networking"]),
@@ -22,8 +22,9 @@ let package = Package(
             path: "Sources/Networking",
             resources: [.process("Resources/PrivacyInfo.xcprivacy")],
             linkerSettings: [
-                .linkedFramework("UIKit", .when(platforms: [.iOS, .macCatalyst, .tvOS])),
                 .linkedFramework("AppKit", .when(platforms: [.macOS])),
+                .linkedFramework("UIKit", .when(platforms: [.iOS, .macCatalyst, .tvOS, .visionOS])),
+                .linkedFramework("WatchKit", .when(platforms: [.watchOS]))
               ]
         ),
         .testTarget(
