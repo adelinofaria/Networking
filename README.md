@@ -39,18 +39,29 @@ _Unopinated networking framework with readability, easy of use, adaptability and
 - [x] Full cancelation support
 - [x] Full error handling through throw
 - [x] Support for iOS and macOS
-- [ ] Configurable timeout, successResponseRange, Accept/Content-Type headers
-- [ ] Content-Type media type logic [mdn](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type#media-type)
-- [ ] Caching support
-- [ ] Response validation of Content-Type and statusCode
-- [ ] Upload/Download tasks & multipart upload
 - [x] Extensive documentation
+- [ ] Support for watchOS
+- [ ] Full Caching implementation
+- [ ] Upload/Download tasks & multipart upload
+- [ ] Support for tvOS & visionOS
+- [ ] Subpackages for common integrations (JSONSerialization, Basic Authentication, OAuth)
+- [ ] Support for Linux
+- [ ] Support for Windows
+
+## Prioritized todo list
+
+- [ ] Tie generic injection into HTTPRequest instead of request methods
+- [ ] Support for watchOS
+- [ ] Response validation of Content-Type and statusCode
+- [ ] Configurable timeout, successResponseRange, Accept/Content-Type headers
+- [ ] Caching implementation
+- [ ] Upload/Download tasks & multipart upload
+- [ ] Support for tvOS & visionOS
+- [ ] Content-Type media type logic [mdn](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type#media-type)
 - [ ] Subpackages for common integrations (JSONSerialization, Basic Authentication, OAuth)
 - [ ] Add sophisticated and extensive examples into Sources/Examples
 - [ ] Support for Linux
-- [ ] Support for watchOS
 - [ ] Support for Windows
-- [ ] Support for tvOS & visionOS
 
 ## Usage
 
