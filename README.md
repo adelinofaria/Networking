@@ -58,6 +58,7 @@ _Unopinated networking framework with readability, easy of use, adaptability and
 
 - [x] Tie generic injection into HTTPRequest instead of request methods
 - [x] Support for watchOS
+- [x] Adopt Swift 6 strict concurrency checks for data race safety
 - [ ] Response validation of Content-Type and statusCode
 - [ ] Configurable timeout, successResponseRange, Accept/Content-Type headers
 - [ ] Caching implementation
