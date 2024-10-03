@@ -7,25 +7,31 @@
    <img src="https://github.com/adelinofaria/networking/actions/workflows/tests.yml/badge.svg?branch=main" alt="GitHub Action Status">
  </a>
   <a href="https://raw.githubusercontent.com/adelinofaria/networking/main/LICENSE">
-    <img src="https://img.shields.io/badge/license-MIT-lightgrey.svg?maxAge=2592000" alt="MIT license">
+    <img src="https://img.shields.io/github/license/adelinofaria/networking" alt="GitHub License">
+  </a>
+  <a href="Platforms">
+    <img src="https://img.shields.io/badge/platforms-iOS%20%7C%20macOS%20%7C%20watchOS-333333.svg" alt="Supported Platforms: iOS, macOS, watchOS" />
   </a>
 </p>
 
 <p align="center">
-  <a href="Platforms">
-    <img src="https://img.shields.io/badge/platforms-iOS%20%7C%20macOS%20%7C%20watchOS-333333.svg" alt="Supported Platforms: iOS, macOS" />
-  </a>
   <a href="https://github.com/apple/swift">
-    <img src="https://img.shields.io/badge/Swift-6.0-F05138.svg" alt="Swift 6.0 supported">
+    <img src="https://img.shields.io/badge/Swift-6.0-F05138.svg?logo=swift" alt="Swift 6.0+">
   </a>
   <a href="https://swift.org/package-manager/">
-    <img src="https://img.shields.io/badge/Swift_Package_Manager-compatible-F05138?style=flat-square" alt="Swift Package Manager compatible">
+    <img src="https://img.shields.io/badge/Swift_Package_Manager-compatible-lightgreen" alt="Swift Package Manager compatible">
   </a>
 </p>
 
 # Networking
 
 _Unopinated networking framework with readability, easy of use, adaptability and leverage of swift's latest technologies._
+
+## Platforms
+
+- **iOS** 13.0+
+- **macOS** - 10.15+ (Catalina)
+- **watchOS** - 6.0+
 
 ## Features
 
