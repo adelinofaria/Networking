@@ -9,7 +9,7 @@
 import Foundation
 
 /// Enum of the supported HTTP methods and their associated values.
-public enum HTTPMethod: String {
+public enum HTTPMethod: String, Sendable {
     case get = "GET"
     case head = "HEAD"
     case post = "POST"

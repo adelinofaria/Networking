@@ -9,7 +9,7 @@
 import Foundation
 import Networking
 
-struct DecodableObject: Equatable {
+struct DecodableObject: Sendable, Equatable {
 
     let a: Bool
     let b: Int

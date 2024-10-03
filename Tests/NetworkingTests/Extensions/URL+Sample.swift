@@ -9,5 +9,5 @@
 import Foundation
 
 extension URL {
-    static var sample = URL(string: "https://host.domain/path?q=abc")!
+    static let sample = URL(string: "https://host.domain/path?q=abc")!
 }

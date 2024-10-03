@@ -9,8 +9,8 @@
 import Foundation
 
 /// `HTTPResponse` contains all the captured information from a `URLRequest` sent through `URLSession.data(for:)`.
-public struct HTTPResponse<T: NetworkDecodable, E: Error & NetworkDecodable> {
-    
+public struct HTTPResponse<T: NetworkDecodable, E: Error & NetworkDecodable>: Sendable {
+
     /// Result of the data task.
     /// `T` stands for the expected response model captured on reponse's body.
     /// `E` stands for for an error model from a successful connection. (e.g. an API error model from the contract with API)
@@ -21,7 +21,7 @@ public struct HTTPResponse<T: NetworkDecodable, E: Error & NetworkDecodable> {
     let httpStatusCode: Int
 
     /// Captured `HTTPURLResponse` HTTP headers.
-    let httpHeaders: [AnyHashable: Any]
+    let httpHeaders: [String: String]?
 
     /// Syntatic sugar for the `T` object
     var resultObject: T? {

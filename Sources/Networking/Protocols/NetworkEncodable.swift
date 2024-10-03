@@ -9,7 +9,7 @@
 import Foundation
 
 /// `Networking` encoding  decoupling protocol.
-public protocol NetworkEncodable: Hashable {
+public protocol NetworkEncodable: Sendable, Hashable {
     
     /// Optional value to be included into `URLRequest` as HTTP header `Content-Type`.
     var contentType: String? { get }

@@ -9,13 +9,13 @@
 import Foundation
 import Testing
 
-protocol MockURLProtocolDelegate {
+protocol MockURLProtocolDelegate: Sendable {
     func processRequest(with task: URLSessionTask) async throws -> (URLResponse, Data)
 }
 
 final class MockURLProtocol: URLProtocol {
 
-    static var delegate: MockURLProtocolDelegate?
+    nonisolated(unsafe) static var delegate: MockURLProtocolDelegate?
 
     override class func canInit(with task: URLSessionTask) -> Bool {
         // FIXME: check schema
@@ -39,20 +39,28 @@ final class MockURLProtocol: URLProtocol {
             return
         }
 
+        self.processRequest(client: self.client, task: task, delegate: delegate)
+    }
+    override func stopLoading() {
+
+    }
+}
+
+extension MockURLProtocol : @unchecked Sendable {
+
+    func processRequest(client: (any URLProtocolClient)?, task: URLSessionTask, delegate: any MockURLProtocolDelegate) {
+
         Task {
             do {
                 let (response, data) = try await delegate.processRequest(with: task)
 
-                self.client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
-                self.client?.urlProtocol(self, didLoad: data)
-                self.client?.urlProtocolDidFinishLoading(self)
+                client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
+                client?.urlProtocol(self, didLoad: data)
+                client?.urlProtocolDidFinishLoading(self)
             } catch {
                 Issue.record("MockURLProtocol - Error trying to fetch mock for corresponding URLSessionTask")
             }
         }
-    }
-    override func stopLoading() {
-
     }
 }
 

@@ -9,7 +9,7 @@
 import Foundation
 
 /// Empty object that conforms to `NetworkDecodable` for requests that don't expect body.
-public struct None: NetworkDecodable {
+public struct None: Sendable, NetworkDecodable {
     public static func decode(data: Data) async throws(NetworkDecodableError) -> Self {
         .init()
     }

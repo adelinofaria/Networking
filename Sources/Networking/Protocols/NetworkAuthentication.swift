@@ -9,7 +9,7 @@
 import Foundation
 
 /// `Networking` authentication decoupling protocol.
-public protocol NetworkAuthentication {
+public protocol NetworkAuthentication: Sendable {
 
     /// Receiver must modify provided `URLRequest` to successfuly satisfy the authentication requirements.
     /// - Parameters:

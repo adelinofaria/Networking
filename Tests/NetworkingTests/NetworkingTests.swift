@@ -126,7 +126,7 @@ struct NetworkingTests {
         }
 
         #expect(httpResponse.httpStatusCode == 200)
-        #expect(httpResponse.httpHeaders.count == 0)
+        #expect(httpResponse.httpHeaders?.count == 0)
     }
 
     @Test

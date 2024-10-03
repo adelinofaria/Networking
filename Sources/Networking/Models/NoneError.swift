@@ -9,7 +9,7 @@
 import Foundation
 
 /// Empty error object that conforms to `NetworkDecodable` for requests that don't expect error body.
-public struct NoneError: Error, NetworkDecodable {
+public struct NoneError: Error, Sendable, NetworkDecodable {
     public static func decode(data: Data) async throws(NetworkDecodableError) -> Self {
         .init()
     }

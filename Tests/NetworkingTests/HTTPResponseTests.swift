@@ -26,7 +26,7 @@ struct HTTPResponseTests {
 
         #expect(httpResponse.result == .success(DecodableObject.sample))
         #expect(httpResponse.httpStatusCode == 123)
-        #expect(httpResponse.httpHeaders.keys == [:].keys)
+        #expect(httpResponse.httpHeaders?.keys == [:].keys)
     }
 
     @Test("init(result: .failure)")
@@ -40,7 +40,7 @@ struct HTTPResponseTests {
 
         #expect(httpResponse.result == .failure(DecodableErrorObject()))
         #expect(httpResponse.httpStatusCode == 123)
-        #expect(httpResponse.httpHeaders.keys == [:].keys)
+        #expect(httpResponse.httpHeaders?.keys == [:].keys)
     }
 
     @Test("init(result:httpStatusCode:httpHeaders:)")
@@ -54,7 +54,7 @@ struct HTTPResponseTests {
 
         #expect(httpResponse.result == .success(DecodableObject.sample))
         #expect(httpResponse.httpStatusCode == 321)
-        #expect(httpResponse.httpHeaders.keys == ["k1": "v1", "k2": "v2"].keys)
+        #expect(httpResponse.httpHeaders?.keys == ["k1": "v1", "k2": "v2"].keys)
     }
 
     @Test("var resultObject: T? - .success")

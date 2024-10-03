@@ -104,7 +104,7 @@ public final actor Networking {
 
             return .init(result: object,
                          httpStatusCode: httpURLResponse.statusCode,
-                         httpHeaders: httpURLResponse.allHeaderFields)
+                         httpHeaders: httpURLResponse.allHeaderFields as? [String: String])
         } catch {
             throw .decodable(error: error)
         }

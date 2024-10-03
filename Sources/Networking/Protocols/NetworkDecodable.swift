@@ -9,7 +9,7 @@
 import Foundation
 
 /// `Networking` decoding  decoupling protocol.
-public protocol NetworkDecodable {
+public protocol NetworkDecodable: Sendable {
 
     /// Receiver must atempt to deserialize the `Data` and return a valid instance of the conforming concrete type.
     /// Any errors should be thrown using available error types of `NetworkDecodableError`.

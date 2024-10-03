@@ -9,7 +9,7 @@
 import Foundation
 
 /// `Config` holds default values, shared values and configured policies for internal use.
-public struct Config {
+public struct Config: Sendable {
 
     /// Although duplication of query items isn't a prefered practice, some APIs do use to some extent. To allow such behaviour set his property to `.append`.
     public let queryItemMergePolicy: MergePolicy

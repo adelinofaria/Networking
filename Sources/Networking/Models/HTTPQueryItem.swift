@@ -10,7 +10,7 @@ import Foundation
 
 /// Struct to store queryString's keys and values.
 /// We store this in a struct as opposed to dictionaries to maintain order and uniqueness of it's keys and values
-public struct HTTPQueryItem: Equatable, Hashable {
+public struct HTTPQueryItem: Sendable, Equatable, Hashable {
     let name: String
     let value: String
 }

@@ -9,7 +9,7 @@
 import Foundation
 
 /// Available strategies to be used when resolving merges of `URL`'s query string keys and values.
-public enum MergePolicy {
+public enum MergePolicy: Sendable {
     case append
     case overwrite
 }
