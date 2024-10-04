@@ -10,7 +10,7 @@
     <img src="https://img.shields.io/github/license/adelinofaria/networking" alt="GitHub License">
   </a>
   <a href="Platforms">
-    <img src="https://img.shields.io/badge/platforms-iOS%20%7C%20macOS%20%7C%20watchOS-333333.svg" alt="Supported Platforms: iOS, macOS, watchOS" />
+    <img src="https://img.shields.io/badge/platforms-iOS%20%7C%20Mac_Catalyst%20%7C%20macOS%20%7C%20tvOS%20%7C%20watchOS-333333.svg" alt="Supported Platforms: iOS, Mac Catalyst, macOS, tvOS, watchOS" />
   </a>
 </p>
 
@@ -29,8 +29,10 @@ _Unopinionated networking framework with readability, easy of use, adaptability 
 
 ## Platforms
 
-- **iOS** 13.0+
+- **iOS** - 13.0+
+- **Mac Catalyst** - 16.0+
 - **macOS** - 10.15+ (Catalina)
+- **tvOS** - 13.0+
 - **watchOS** - 6.0+
 
 ## Features
@@ -46,10 +48,10 @@ _Unopinionated networking framework with readability, easy of use, adaptability 
 - [x] Full error handling through throw
 - [x] Support for iOS and macOS
 - [x] Extensive documentation
-- [x] Support for watchOS
+- [x] Support for Mac Catalyst & tvOS & watchOS
 - [ ] Full Caching implementation
 - [ ] Upload/Download tasks & multipart upload
-- [ ] Support for tvOS & visionOS
+- [ ] Support for visionOS
 - [ ] Subpackages for common integrations (JSONSerialization, Basic Authentication, OAuth)
 - [ ] Support for Linux
 - [ ] Support for Windows
@@ -57,13 +59,13 @@ _Unopinionated networking framework with readability, easy of use, adaptability 
 ## Prioritized todo list
 
 - [x] Tie generic injection into HTTPRequest instead of request methods
-- [x] Support for watchOS
+- [x] Support for Mac Catalyst & tvOS & watchOS
 - [x] Adopt Swift 6 strict concurrency checks for data race safety
 - [ ] Response validation of Content-Type and statusCode
 - [ ] Configurable timeout, successResponseRange, Accept/Content-Type headers
 - [ ] Caching implementation
 - [ ] Upload/Download tasks & multipart upload
-- [ ] Support for tvOS & visionOS
+- [ ] Support for visionOS
 - [ ] Content-Type media type logic [mdn](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type#media-type)
 - [ ] Subpackages for common integrations (JSONSerialization, Basic Authentication, OAuth)
 - [ ] Add sophisticated and extensive examples into Sources/Examples

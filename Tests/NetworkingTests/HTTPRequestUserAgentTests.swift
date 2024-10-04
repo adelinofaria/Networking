@@ -10,11 +10,11 @@ import Foundation
 import Testing
 @testable import Networking
 
-#if os(iOS) || os(tvOS) || os(visionOS) || targetEnvironment(macCatalyst)
+#if canImport(UIKit)
 import UIKit
-#elseif os(macOS)
+#elseif canImport(AppKit)
 import AppKit
-#elseif os(watchOS)
+#elseif canImport(WatchKit)
 import WatchKit
 #endif
 

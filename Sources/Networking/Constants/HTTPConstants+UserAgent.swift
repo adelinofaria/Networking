@@ -6,14 +6,16 @@
 //  Copyright © 2024 Adelino Faria. All rights reserved.
 //
 
-#if os(iOS) || os(tvOS) || os(visionOS) || targetEnvironment(macCatalyst)
-import UIKit
-#elseif os(macOS)
-import AppKit
-#elseif os(watchOS)
-import WatchKit
-#else
+#if canImport(Foundation)
 import Foundation
+#endif
+
+#if canImport(UIKit)
+import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#elseif canImport(WatchKit)
+import WatchKit
 #endif
 
 extension HTTPConstants {
@@ -48,23 +50,28 @@ extension HTTPConstants {
         let osVersion = ProcessInfo.processInfo.operatingSystemVersion
         let screenScale: CGFloat?
 
-        #if os(iOS) || os(tvOS) || os(visionOS) || targetEnvironment(macCatalyst)
+        #if canImport(UIKit)
 
-            deviceModel = UIDevice.current.model
-            osName = UIDevice.current.systemName
+        deviceModel = UIDevice.current.model
+        osName = UIDevice.current.systemName
+
+            #if os(iOS) || os(tvOS) || targetEnvironment(macCatalyst)
             screenScale = UIScreen.main.scale
+            #else
+            screenScale = nil
+            #endif
 
-        #elseif os(macOS)
+        #elseif canImport(AppKit)
 
-            deviceModel = HTTPConstants.userAgentDeviceMacOS
-            osName = HTTPConstants.userAgentMacOS
-            screenScale = NSScreen.main?.backingScaleFactor
+        deviceModel = HTTPConstants.userAgentDeviceMacOS
+        osName = HTTPConstants.userAgentMacOS
+        screenScale = NSScreen.main?.backingScaleFactor
 
-        #elseif os(watchOS)
+        #elseif canImport(WatchKit)
 
-            deviceModel = WKInterfaceDevice.current().model
-            osName = WKInterfaceDevice.current().systemName
-            screenScale = WKInterfaceDevice.current().screenScale
+        deviceModel = WKInterfaceDevice.current().model
+        osName = WKInterfaceDevice.current().systemName
+        screenScale = WKInterfaceDevice.current().screenScale
 
         #endif
 
