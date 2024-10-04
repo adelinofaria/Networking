@@ -25,7 +25,7 @@
 
 # Networking
 
-_Unopinated networking framework with readability, easy of use, adaptability and leverage of swift's latest technologies._
+_Unopinionated networking framework with readability, easy of use, adaptability and leverage of swift's latest technologies._
 
 ## Platforms
 
